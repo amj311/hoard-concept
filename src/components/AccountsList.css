@@ -1,0 +1,16 @@
+.accounts-list {
+  text-align:left;
+}
+.accounts-list .list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.accounts-list .item {
+  display:flex;
+  border-bottom: 1px solid #ddd;
+}
+
+.accounts-list .item > * {
+  margin: .5em
+}
