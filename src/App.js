@@ -53,6 +53,12 @@ let scheduledTransactions = [
       new TransactionTemplate("Clozd PT",1000,"checking"),
       new XPerMonthSchedule(2, new Date(2022,MONTHS.FEB,15), new Date(2022,MONTHS.MAY,5))
   ),
+  
+  new TransactionSchedule(
+    new TransactionTemplate("Graduation Party",-100,"checking"),
+    new OneTimeSchedule(new Date(2022,MONTHS.APR,22))
+  ),
+
   new TransactionSchedule( // Clozd full-time
       new TransactionTemplate("Clozd Salary",2500,"checking"),
       new XPerMonthSchedule(2, new Date(2022,MONTHS.MAY,15))

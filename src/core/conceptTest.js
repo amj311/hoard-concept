@@ -42,6 +42,12 @@ let scheduledTransactions = [
         new TransactionTemplate("Nubill",1200,"checking"),
         new XPerMonthSchedule(2, new Date(2021,MONTHS.APR,20), new Date(2022,MONTHS.FEB,5))
     ),
+    
+    new TransactionSchedule(
+        new TransactionTemplate("Graduation Party",-100,"checking"),
+        new OneTimeSchedule(new Date(2022,MONTHS.APR,22))
+    ),
+
     new TransactionSchedule( // Clozd part-time (should actually be every 2 weeks)
         new TransactionTemplate("Clozd PT",1000,"checking"),
         new XPerMonthSchedule(2, new Date(2022,MONTHS.FEB,15), new Date(2022,MONTHS.MAY,5))
