@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import { createContext, useState } from 'react';
 import AccountsList from './components/AccountsList';
+import Forecast from './components/Forecast';
 
 const {
   Account,
@@ -19,7 +20,7 @@ const ForecastService = require("./core/forecastService");
 
 let initialAccounts = [
   new Account("checking",20000),
-  // new Account("savings",1500),
+  new Account("savings",1500),
 ]; //<accountId,account>
 
 
@@ -88,6 +89,8 @@ function App() {
         
       <div className="App">
         <AccountsList></AccountsList>
+        {/* TODO transaction scheduler component */}
+        <Forecast></Forecast>
       </div>
       
     </globalContext.Provider>
