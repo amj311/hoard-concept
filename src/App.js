@@ -21,7 +21,7 @@ const ForecastService = require("./core/forecastService");
 let initialAccounts = [
   new Account("checking",20000),
   new Account("savings",1500),
-]; //<accountId,account>
+];
 
 
 let scheduledTransactions = [
