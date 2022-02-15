@@ -49,8 +49,6 @@ class ForecastService {
     
         monthlySummaries.push(month);
 
-        accounts.get("checking").balance = 0
-    
         console.log("\n\n--- FINAL STATE ---")
         console.log("Accounts:")
         for (let a of accounts.values()) {
@@ -63,7 +61,7 @@ class ForecastService {
     static copyAccounts(accounts) {
         let newAccounts = new Map();
         for (let a of accounts.values()) {
-            newAccounts.set(a.id, new Account(a.id,a.balance))
+            newAccounts.set(a.id, new Account(a.id,Number(a.balance)))
         }
         return newAccounts
     }
