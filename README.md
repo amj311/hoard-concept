@@ -4,7 +4,7 @@
 
 ## Concept Test
 
-Run `node core/conceptTest.js` to run the working test file that loads some example accounts and scheduled transactions and uses the core libraries to compute and print out a forecast based on them.
+Run `node src/core/conceptTest.js` to run the working test file that loads some example accounts and scheduled transactions and uses the core libraries to compute and print out a forecast based on them.
 
 
 ## Frontend
