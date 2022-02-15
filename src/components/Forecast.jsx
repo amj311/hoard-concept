@@ -80,6 +80,7 @@ export default function Forecast() {
 
   return (
     <div className="accounts-list">
+      <h3>Forecast</h3>
       { chartData ?
         <Line options={chartOptions} data={chartData} />
       :
