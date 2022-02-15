@@ -1,53 +1,90 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { globalContext } from '../App';
+import ForecastService from '../core/forecastService';
 // import './Forecast.css'
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import { Line } from 'react-chartjs-2';
+// import faker from 'faker';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
+const chartOptions = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: 'top',
+    },
+    title: {
+      display: true,
+      text: 'Financial Forecast',
+    },
+  },
+};
+
+const colors = ['#00bbff', '#ff0044']
 
 export default function Forecast() {
 
-  let [accounts, setAccounts] = useContext(globalContext).accounts;
-  let [showNew, setShowNew]= useState(false)
+  let [accounts] = useContext(globalContext).accounts;
+  let [transactions] = useContext(globalContext).scheduled;
 
-  function createAccount(data) {
-      let id = document.getElementById("newAccountId").value;
-      let balance = document.getElementById("newAccountBalance").value;
-      setAccounts(accounts.concat([{id, balance}]))
-      
-      document.getElementById("newAccountId").value = "";
-      document.getElementById("newAccountBalance").value = "";
-  }
+  let [forecast, setForecast] = useState([]);
+  let [chartData, setChartData] = useState(null); // {labels, datasets: {data, label, ...options} }
 
-  function removeAccount(acct) {
-    setAccounts(accounts.filter(a=>a!==acct))
-  }
+  useEffect(()=>{
+    setForecast(
+      ForecastService.computeForecast(accounts, transactions, new Date(), new Date(2023,0,1))
+    )
+  }, [accounts, transactions])
 
-  function toggleNew() {
-    setShowNew(!showNew)
-  }
+  
+  useEffect(()=>{
+    console.log("new forecast:", forecast)
+    if (!forecast) return;
+    let labels = [];
+    let datasets = new Map(); // <accountId, account dataseries>
+    labels.push("Today");
+    accounts.forEach((account,i)=>{
+      console.log(account)
+      let color = colors[i%colors.length]
+      datasets.set(account.id, {label: account.id, data: [account.balance], borderColor:color, backgroundColor:color})
+    })
+    for (let month of forecast) {
+      labels.push(month.date.format("MM-YYYY"))
+      month.printReport()
+      for (let [accountId,account] of month.snapshots[month.snapshots.length-1].balances) {
+        datasets.get(accountId).data.push(account.balance)
+      }
+    }
+    setChartData({labels,datasets: Array.from(datasets.values())})
+    console.log("data: ",{labels,datasets})
+  }, [forecast])
+
 
   return (
     <div className="accounts-list">
-        <div>
-            <h3>Accounts</h3><button onClick={toggleNew}>{showNew? '✖' : '➕'}</button>
-        </div>
-        { showNew ?
-            <div>
-                <input id="newAccountId" />
-                <input id="newAccountBalance" />
-                <button onClick={createAccount}>Create</button>
-            </div>
-            :
-            null
-        }
-        <div className="list">
-            { accounts.map(acct=>(
-                <div className="item" key={acct.id}>
-                    <div style={{flexGrow:1}}>{acct.id}</div>
-                    <div>{acct.balance}</div>
-                    <button onClick={()=>removeAccount(acct)}>❌</button>
-                </div>
-            ))}
-
-        </div>
+      { chartData ?
+        <Line options={chartOptions} data={chartData} />
+      :
+        null
+      }
     </div>
   );
 }
