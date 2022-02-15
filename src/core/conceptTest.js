@@ -11,13 +11,11 @@ const {
 const { MONTHS } = require("./constants");
 const { newMoment } = require("./dateUtils");
 const ForecastService = require("./forecastService");
-// TODO load accounts from external source
 
 let initialAccounts = [
     new Account("checking",20000),
     // new Account("savings",1500),
-]; //<accountId,account>
-
+];
 
 let scheduledTransactions = [
     new TransactionSchedule( // Groceries
