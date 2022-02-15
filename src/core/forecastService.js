@@ -22,7 +22,7 @@ class ForecastService {
         for (let a  of initialBalances) {
             console.log("  "+a.toString());
         }
-    
+        let accountsCopy = this.copyAccounts(accounts)
         let monthlySummaries = [];
         let month = new MonthSummary(now, this.copyAccounts(accounts));
         for (let event of events) {
@@ -33,7 +33,8 @@ class ForecastService {
                 month = new MonthSummary(now.add(1,'M'), this.copyAccounts(accounts))
             }
             let details = event.details;
-            let changedAccount = accounts.get(details.account)
+            accountsCopy = this.copyAccounts(accountsCopy)
+            let changedAccount = accountsCopy.get(details.account)
             if (changedAccount) {
                 // console.log("\n--- "+format(event.date)+" ---")
                 // let sign = details.amount > 0 ? '💹' : '🔻'
@@ -43,7 +44,7 @@ class ForecastService {
                 // if (changedAccount.balance < 0) {
                 //     console.log("⭕ NEGATIVE BALANCE !!!")
                 // }
-                month.addSnapshot(new Snapshot(this.copyAccounts(accounts),event))
+                month.addSnapshot(new Snapshot(accountsCopy,event))
             }
         }
     
