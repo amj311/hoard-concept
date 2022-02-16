@@ -3,6 +3,7 @@ import './App.css';
 import { createContext, useState } from 'react';
 import AccountsList from './components/AccountsList';
 import Forecast from './components/Forecast';
+import TransactionList from './components/TransactionList';
 
 const {
   Account,
@@ -96,6 +97,7 @@ function App() {
       <div className="App">
         <AccountsList></AccountsList>
         {/* TODO transaction scheduler component */}
+        <TransactionList transactions={scheduledTransactions} />
         <Forecast></Forecast>
       </div>
       
