@@ -50,3 +50,12 @@
   font-size: 12px;
   text-align: center;
 }
+
+.transaction-list-header {
+  display: grid;
+  grid-template-columns: 1fr 50px;
+}
+
+.schedule-transaction-button {
+  margin: auto;
+}

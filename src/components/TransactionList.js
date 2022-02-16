@@ -1,15 +1,23 @@
-import React, {useContext} from 'react';
+import React, {useState, useContext} from 'react';
 import { globalContext } from '../App';
 import { OneTimeSchedule, XPerMonthSchedule } from '../core/models';
+import NewTransactionForm from './NewTransactionForm';
 import './TransactionList.css';
 
 const TransactionList = (props) => {
   const [transactions, setTransactions] = useContext(globalContext).scheduled;
   const [categories, setCategories] = useContext(globalContext).categories;
+  const [createTransaction, setCreateTransaction] = useState(false);
 
   return (
     <div>
-      <h2>Scheduled Transactions</h2>
+      <div className='transaction-list-header'>
+        <h2>Scheduled Transactions</h2>
+        <button className='schedule-transaction-button' onClick={() => setCreateTransaction(!createTransaction)}>{createTransaction ? '✖' : '➕'}</button>
+      </div>
+      {createTransaction &&
+        <NewTransactionForm close={() => setCreateTransaction(false)}/>
+      }
       <div className='transaction-list'>
         {transactions.map((transaction, idx) => {
           let categoryName;
@@ -48,7 +56,7 @@ const TransactionList = (props) => {
               </div>
               <div className='schedule-details'>
                 {transaction.schedule instanceof OneTimeSchedule &&
-                  'One-time'
+                  `One-time on ${transaction.schedule.date.format('MM-DD-YYYY')}`
                 }
                 {transaction.schedule instanceof XPerMonthSchedule &&
                   <>
