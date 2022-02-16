@@ -283,5 +283,5 @@ class MonthSummary {
 }
 
 module.exports = {
-    Account,TransactionEvent,TransactionSchedule,MonthSummary,Snapshot,XPerMonthSchedule,TransactionTemplate,OneTimeSchedule
+    Category, Account,TransactionEvent,TransactionSchedule,MonthSummary,Snapshot,XPerMonthSchedule,TransactionTemplate,OneTimeSchedule
 }
