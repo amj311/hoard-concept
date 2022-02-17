@@ -1,0 +1,66 @@
+.transaction-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));;
+}
+
+.transaction {
+  border: 1px solid black;
+  margin: 5px;
+  padding: 5px;
+}
+
+.transaction-details {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.transaction-left {
+  text-align: left;
+}
+
+.transaction-right {
+  text-align: right;
+}
+
+.amount {
+  font-size: 20px;
+}
+
+.account {
+  font-size: 12px;
+}
+
+.expense {
+  color: var(--color-expense);
+}
+
+.memo {
+  font-size: 20px;
+}
+
+.category {
+  font-size: 12px;
+}
+
+.income {
+  color: var(--color-income);
+}
+
+.schedule-details {
+  font-size: 12px;
+  text-align: center;
+}
+
+.transaction-list-header {
+  display: grid;
+  grid-template-columns: 1fr 50px;
+}
+
+.schedule-transaction-button {
+  margin: auto;
+}
+
+.delete-transaction-button {
+  float: right;
+}

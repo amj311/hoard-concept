@@ -1,8 +1,9 @@
-const moment = require("moment");
-const { MONTHS } = require("./constants");
-const { newMoment } = require("./dateUtils");
+import moment from "moment"
+import { MONTHS } from "./constants"
+import { newMoment } from "./dateUtils"
+import idGenerator from "../util/idGenerator"
 
-class Account {
+export class Account {
     constructor(id,balance) {
         this.id = id;
         this.balance = balance;
@@ -12,14 +13,14 @@ class Account {
     }
 }
 
-class Category {
+export class Category {
     constructor(id,displayName=null) {
         this.id = id;
         this.displayName = displayName||id;
     }
 }
 
-class CategoryTally {
+export class CategoryTally {
     constructor(id, amount=0) {
         this.id = id;
         this.amount = amount;
@@ -27,11 +28,11 @@ class CategoryTally {
 }
 
 
-class Schedule {
+export class Schedule {
     getOccurrencesBetween(start,end) {}
 }
 
-class XPerMonthSchedule extends Schedule {
+export class XPerMonthSchedule extends Schedule {
     constructor(frequencyPerMonth, startDate, endDate) {
         super();
         this.frequencyPerMonth = frequencyPerMonth;
@@ -60,7 +61,7 @@ class XPerMonthSchedule extends Schedule {
             this.monthDays.forEach(day=>{
                 // Catch invalid February days
                 // BUG: does not account for leap years
-                if (date.month()===MONTHS.FEB && day > 27) day = 27;
+                if (date.month()===MONTHS.FEB && day > 28) day = 28;
                 let occurrence = newMoment(date).date(day);
                 if (occurrence.isSameOrBefore(end) && date.isSameOrBefore(occurrence)) {
                     occurrences.push(occurrence);
@@ -74,7 +75,7 @@ class XPerMonthSchedule extends Schedule {
     }
 }
 
-class OneTimeSchedule extends Schedule {
+export class OneTimeSchedule extends Schedule {
     constructor(date) {
         super();
         this.date = newMoment(date);
@@ -90,7 +91,7 @@ class OneTimeSchedule extends Schedule {
 }
 
 //  NOT SURE THIS WILL BE USED YET. IT NEEDS SOME TESTING TO MAKE SURE IT WORKS
-// class EveryXMonthSchedule extends Schedule {
+// export class EveryXMonthSchedule extends Schedule {
 //     constructor(monthIval, startDate, endDate) {
 //         super();
 //         this.frequencyPerMonth = monthIval;
@@ -130,7 +131,7 @@ class OneTimeSchedule extends Schedule {
 //     }
 // }
 
-class TransactionTemplate {
+export class TransactionTemplate {
     constructor(memo,amount,account,categoryId=null) {
         this.memo = memo;
         this.amount = amount;
@@ -139,14 +140,15 @@ class TransactionTemplate {
     }
 }
 
-class TransactionSchedule {
+export class TransactionSchedule {
     constructor(template,schedule) {
         this.schedule = schedule;
         this.template = template;
+        this.id = idGenerator();
     }
 }
 
-class TransactionEvent {
+export class TransactionEvent {
     constructor(template,date) {
         this.date = date;
         this.details = template;
@@ -155,7 +157,7 @@ class TransactionEvent {
 
 /** A structure that holds all computed transactions for easy access */
 //  UNFINISHED!!!
-class Forecast {
+export class Forecast {
     constructor() {
         this.map = new Map(); // <id, idx>
         this.list = [];
@@ -214,14 +216,14 @@ class Forecast {
     // }
 }
 
-class Snapshot {
+export class Snapshot {
     constructor(balances, mostRecentEvent) {
         this.balances = balances;
         this.mostRecentEvent = mostRecentEvent;
     }
 }
 
-class MonthSummary {
+export class MonthSummary {
     constructor(date, initialBalances) {
         this.date = newMoment(date);
         this.id = this.date.format("YYYY-MM")
@@ -280,8 +282,4 @@ class MonthSummary {
 
     }
 
-}
-
-module.exports = {
-    Account,TransactionEvent,TransactionSchedule,MonthSummary,Snapshot,XPerMonthSchedule,TransactionTemplate,OneTimeSchedule
 }

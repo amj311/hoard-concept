@@ -1,8 +1,8 @@
-const { newMoment } = require("./dateUtils");
-const { MonthSummary, Snapshot, Account } = require("./models");
-const TransactionService = require("./transactionService");
+import { newMoment } from "./dateUtils"
+import { MonthSummary, Snapshot, Account } from "./models"
+import TransactionService from "./transactionService"
 
-class ForecastService {
+export default class ForecastService {
     static computeForecast(initialBalances, scheduledTransactions, begin, end) {
         let now = newMoment(begin)
         end = newMoment(end);
@@ -67,6 +67,3 @@ class ForecastService {
         return newAccounts
     }
 }
-
-// Create forecast with monthly breakdowns and yearly summaries
-module.exports = ForecastService

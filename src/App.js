@@ -3,6 +3,7 @@ import './App.css';
 import { createContext, useState } from 'react';
 import AccountsList from './components/AccountsList';
 import Forecast from './components/Forecast';
+import TransactionList from './components/TransactionList';
 
 const {
   Account,
@@ -10,6 +11,7 @@ const {
   XPerMonthSchedule,
   TransactionTemplate,
   OneTimeSchedule,
+  Category
 } = require("./core/models")
 const { MONTHS } = require("./core/constants");
 const { newMoment } = require("./core/dateUtils");
@@ -26,7 +28,7 @@ let initialAccounts = [
 
 let scheduledTransactions = [
   new TransactionSchedule( // Groceries
-      new TransactionTemplate("Groceries",-200,"checking"),
+      new TransactionTemplate("Groceries",-200,"checking", 'food'),
       new XPerMonthSchedule(2, new Date(2021,MONTHS.APR,10))
   ),
   new TransactionSchedule( // Utilities
@@ -81,21 +83,26 @@ let scheduledTransactions = [
   ),
 ]
 
+let initialCategories = [
+  new Category('food', 'Food')
+];
+
 
 export const globalContext = createContext();
 
 function App() {
   let accounts = useState(initialAccounts)
   let scheduled = useState(scheduledTransactions)
+  let categories = useState(initialCategories);
   
   return (
     <globalContext.Provider value={{
-      accounts, scheduled
+      accounts, scheduled, categories
     }}>
         
       <div className="App">
         <AccountsList></AccountsList>
-        {/* TODO transaction scheduler component */}
+        <TransactionList />
         <Forecast></Forecast>
       </div>
       

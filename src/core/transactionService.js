@@ -1,10 +1,8 @@
-const { TransactionEvent } = require("./models");
+import { TransactionEvent } from "./models";
 
-class TransactionService {
+export default class TransactionService {
     static generateEventsBetween(start,end,tranSchedule) {
         let dates = tranSchedule.schedule.getOccurrencesBetween(start,end);
         return dates.map(d=>new TransactionEvent(tranSchedule.template,d))
     }
 }
-
-module.exports = TransactionService;
