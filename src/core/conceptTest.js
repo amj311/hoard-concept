@@ -1,4 +1,4 @@
-const {
+import {
     Account,
     TransactionSchedule,
     TransactionEvent,
@@ -7,10 +7,10 @@ const {
     OneTimeSchedule,
     MonthSummary,
     Snapshot,
-} = require("./models")
-const { MONTHS } = require("./constants");
-const { newMoment } = require("./dateUtils");
-const ForecastService = require("./forecastService");
+} from "./models"
+import { MONTHS } from "./constants"
+import { newMoment } from "./dateUtils"
+import ForecastService from "./forecastService"
 
 let initialAccounts = [
     new Account("checking",20000),

@@ -102,7 +102,6 @@ function App() {
         
       <div className="App">
         <AccountsList></AccountsList>
-        {/* TODO transaction scheduler component */}
         <TransactionList />
         <Forecast></Forecast>
       </div>
