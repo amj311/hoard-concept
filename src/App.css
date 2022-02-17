@@ -1,3 +1,8 @@
+html {
+  --color-income: green;
+  --color-expense: red;
+}
+
 .App {
   padding: 2em;
 }

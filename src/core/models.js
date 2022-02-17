@@ -1,6 +1,7 @@
 const moment = require("moment");
 const { MONTHS } = require("./constants");
 const { newMoment } = require("./dateUtils");
+const idGenerator = require("../util/idGenerator");
 
 class Account {
     constructor(id,balance) {
@@ -143,6 +144,7 @@ class TransactionSchedule {
     constructor(template,schedule) {
         this.schedule = schedule;
         this.template = template;
+        this.id = idGenerator();
     }
 }
 
@@ -283,5 +285,5 @@ class MonthSummary {
 }
 
 module.exports = {
-    Account,TransactionEvent,TransactionSchedule,MonthSummary,Snapshot,XPerMonthSchedule,TransactionTemplate,OneTimeSchedule
+    Category, Account,TransactionEvent,TransactionSchedule,MonthSummary,Snapshot,XPerMonthSchedule,TransactionTemplate,OneTimeSchedule
 }
