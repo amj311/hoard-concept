@@ -9,6 +9,10 @@ const TransactionList = (props) => {
   const [categories, setCategories] = useContext(globalContext).categories;
   const [createTransaction, setCreateTransaction] = useState(false);
 
+  const removeScheduledTransaction = (id) => {
+    setTransactions(transactions.filter((transaction) => transaction.id !== id));
+  };
+
   return (
     <div>
       <div className='transaction-list-header'>
@@ -29,6 +33,7 @@ const TransactionList = (props) => {
           }
           return (
             <div key={idx} className='transaction'>
+              <button className='delete-transaction-button' onClick={()=>removeScheduledTransaction(transaction.id)}>❌</button>
               <div className='transaction-details'>
                 <div className='transaction-left'>
                   {transaction.template.amount < 0 ?

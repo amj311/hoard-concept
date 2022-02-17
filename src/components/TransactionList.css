@@ -10,6 +10,7 @@
 }
 
 .transaction-details {
+  width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
@@ -58,4 +59,8 @@
 
 .schedule-transaction-button {
   margin: auto;
+}
+
+.delete-transaction-button {
+  float: right;
 }
