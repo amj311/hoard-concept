@@ -38,7 +38,7 @@ const chartOptions = {
   },
 };
 
-const colors = ['#00bbff', '#ff0044']
+const colors = ['#00bbff', '#00dd44']
 
 export default function Forecast() {
 
