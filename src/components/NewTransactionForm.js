@@ -44,6 +44,10 @@ const NewTransactionForm = (props) => {
       alert('Please select an account');
       return;
     }
+    if (type === TransactionType.Transfer && !originAcct) {
+      alert('Please speicify the "transfer from" account!');
+      return;
+    }
     let schedule;
     if (frequencyType === 'ONCE') {
       schedule = new OneTimeSchedule(date);
@@ -79,6 +83,10 @@ const NewTransactionForm = (props) => {
  
   return (
     <form onSubmit={scheduleTransaction}>
+      <b>New Transaction</b>
+      <br/>
+      <br/>
+      
       <label htmlFor='type'>Type: </label>
       <select id='type' name='type' value={type} onChange={(event) => setType(event.target.value)}>
         { Array.from(Object.values(TransactionType)).map(v=>(
@@ -89,21 +97,46 @@ const NewTransactionForm = (props) => {
       <label htmlFor='amount'>Amount: </label>
       <input id="amount" type="number" step={0.01} min="0" value={amount} onChange={(event) => setAmount(event.target.valueAsNumber)} ></input>
       <br />
+
+      { type === TransactionType.Transfer ?
+        <>
+          <label htmlFor='origin'>From: </label>
+          <select id='origin' name='origin' value={originAcct} onChange={(event) => setOriginAcct(event.target.value)}>
+            <option value={undefined}>Please select an account</option>
+            {accounts.map((account) => <option key={account.id} value={account.id}>{account.id}</option>)}
+          </select>
+          <br/>
+          <label htmlFor='target'>To: </label>
+          <select id='target' name='target' value={targetAcct} onChange={(event) => setTargetAcct(event.target.value)}>
+            <option value={undefined}>Please select an account</option>
+            {accounts.map((account) => <option key={account.id} value={account.id}>{account.id}</option>)}
+          </select>
+        </>
+        :
+        <>
+          <label htmlFor='account'>Account: </label>
+          <select id='account' name='account' value={targetAcct} onChange={(event) => setTargetAcct(event.target.value)}>
+            <option value={undefined}>Please select an account</option>
+            {accounts.map((account) => <option key={account.id} value={account.id}>{account.id}</option>)}
+          </select>
+        </>
+        
+      }
+      <br/>
+      <br/>
+
       <label htmlFor='memo'>Memo: </label>
       <input id="memo" type="text" value={memo} onChange={(event) => setMemo(event.target.value)}></input>
       <br />
-      <label htmlFor='account'>Account: </label>
-      <select id='account' name='account' value={targetAcct} onChange={(event) => setTargetAcct(event.target.value)}>
-        <option value={undefined}>Please select an account</option>
-        {accounts.map((account) => <option key={account.id} value={account.id}>{account.id}</option>)}
-      </select>
-      <br />
+
       <label htmlFor='category'>Category: </label>
       <select id='category' name='category' value={category} onChange={(event) => setCategory(event.target.value)}>
         <option value={undefined}>Please select a category</option>
         {categories.map((category) => <option key={category.id} value={category.id}>{category.displayName}</option>)}
       </select>
       <br />
+      <br />
+
       <label htmlFor='frequency'>Frequency: </label>
       <select id='frequency' name='frequency' value={frequencyType} onChange={(event) => setFrequencyType(event.target.value)}>
         <option value='ONCE'>One-time</option>

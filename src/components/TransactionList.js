@@ -13,6 +13,12 @@ const TransactionList = (props) => {
     setTransactions(transactions.filter((transaction) => transaction.id !== id));
   };
 
+  const getAmountClass = (template) => {
+    if (template.type === TransactionType.Income) return 'income'
+    if (template.type === TransactionType.Expense) return 'expense'
+    if (template.type === TransactionType.Transfer) return 'transfer'
+  }
+
   return (
     <div>
       <div className='transaction-list-header'>
@@ -24,29 +30,31 @@ const TransactionList = (props) => {
       }
       <div className='transaction-list'>
         {transactions.map((transaction, idx) => {
+          let template = transaction.template;
+
           let categoryName;
-          if (transaction.template.categoryId) {
-            const category = categories.find((category) => category.id === transaction.template.categoryId);
+          if (template.categoryId) {
+            const category = categories.find((category) => category.id === template.categoryId);
             if (category) {
               categoryName = category.displayName;
             }
           }
-          let amountClass = transaction.template.type === TransactionType.Expense ? 'expense' : 'income'
           return (
             <div key={idx} className='transaction'>
               <button className='delete-transaction-button' onClick={()=>removeScheduledTransaction(transaction.id)}>❌</button>
               <div className='transaction-details'>
                 <div className='transaction-left'>
-                  <div className={`${amountClass} amount`}>
-                    ${transaction.template.amount}
+                  <div className={`${getAmountClass(transaction.template)} amount`}>
+                    { template.type === TransactionType.Transfer && <span>⇆ </span> }
+                    ${template.amount}
                   </div>
                   <div className='account'>
-                    Account: {transaction.template.targetAccount}
+                    Account: {template.targetAccount}
                   </div>
                 </div>
                 <div className='transaction-right'>
                   <div className='memo'>
-                    {transaction.template.memo}
+                    {template.memo}
                   </div>
                   {categoryName &&
                     <div className='category'>
