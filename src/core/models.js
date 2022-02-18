@@ -131,11 +131,19 @@ export class OneTimeSchedule extends Schedule {
 //     }
 // }
 
+export const TransactionType = {
+    Income: "Income",
+    Expense: "Expense",
+    Transfer: "Transfer",
+}
+
 export class TransactionTemplate {
-    constructor(memo,amount,account,categoryId=null) {
+    constructor(type,memo,amount,target,origin=null,categoryId=null) {
+        this.type = type;
         this.memo = memo;
         this.amount = amount;
-        this.account = account;
+        this.targetAccount = target;
+        this.originAccount = origin;
         this.categoryId = categoryId;
     }
 }
