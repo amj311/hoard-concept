@@ -42,27 +42,27 @@ const TransactionList = (props) => {
           return (
             <div key={idx} className='transaction'>
               <button className='delete-transaction-button' onClick={()=>removeScheduledTransaction(transaction.id)}>❌</button>
+              
               <div className='transaction-details'>
                 <div className='transaction-left'>
-                  <div className={`${getAmountClass(transaction.template)} amount`}>
-                    { template.type === TransactionType.Transfer && <span>⇆ </span> }
-                    ${template.amount}
-                  </div>
-                  <div className='account'>
-                    Account: {template.targetAccount}
-                  </div>
-                </div>
-                <div className='transaction-right'>
-                  <div className='memo'>
-                    {template.memo}
-                  </div>
-                  {categoryName &&
+                  <div className='memo'>{template.memo}</div>
+                  { categoryName &&
                     <div className='category'>
                       Category: {categoryName}
                     </div>
                   }
                 </div>
+                <div className='transaction-right'>
+                  <div className={`${getAmountClass(transaction.template)} amount`}>
+                    { template.type === TransactionType.Transfer && <span>⇆ </span> }
+                    ${template.amount.toLocaleString('en-US')}
+                  </div>
+                  <div className='account'>
+                    Account: {template.targetAccount}
+                  </div>
+                </div>
               </div>
+              
               <div className='schedule-details'>
                 {transaction.schedule instanceof OneTimeSchedule &&
                   `One-time on ${transaction.schedule.date.format('MM-DD-YYYY')}`
