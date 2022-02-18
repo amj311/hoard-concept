@@ -37,7 +37,7 @@ let scheduledTransactions = [
       new XPerMonthSchedule(1, new Date(2021,MONTHS.APR,10))
   ),
   new TransactionSchedule( // Car Insurance
-      new TransactionTemplate(TransactionType.Expense,"Car Insurance",-71,"checking", null),
+      new TransactionTemplate(TransactionType.Expense,"Car Insurance",-80,"checking", null),
       new XPerMonthSchedule(1, new Date(2021,MONTHS.APR,10))
   ),
   new TransactionSchedule( // Fun Money
@@ -48,12 +48,8 @@ let scheduledTransactions = [
       new TransactionTemplate(TransactionType.Expense,"Child Care",-12,"checking", null),
       new XPerMonthSchedule(1, new Date(2021,MONTHS.APR,10))
   ),
-  new TransactionSchedule( // Nubill thru january
-      new TransactionTemplate(TransactionType.Income,"Nubill",1200,"checking", null),
-      new XPerMonthSchedule(2, new Date(2021,MONTHS.APR,20), new Date(2022,MONTHS.FEB,5))
-  ),
   new TransactionSchedule( // Clozd part-time (should actually be every 2 weeks)
-      new TransactionTemplate(TransactionType.Income,"Clozd PT",1000,"checking", null),
+      new TransactionTemplate(TransactionType.Income,"Student Job PT",1000,"checking", null),
       new XPerMonthSchedule(2, new Date(2022,MONTHS.FEB,15), new Date(2022,MONTHS.MAY,5))
   ),
   
@@ -63,7 +59,7 @@ let scheduledTransactions = [
   ),
 
   new TransactionSchedule( // Clozd full-time
-      new TransactionTemplate(TransactionType.Income,"Clozd Salary",2500,"checking", null),
+      new TransactionTemplate(TransactionType.Income,"Full TIme Salary",2500,"checking", null),
       new XPerMonthSchedule(2, new Date(2022,MONTHS.MAY,15))
   ),
   new TransactionSchedule(
