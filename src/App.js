@@ -77,6 +77,10 @@ let scheduledTransactions = [
       new TransactionTemplate(TransactionType.Expense,"Closing Costs",10000,"checking", null),
       new OneTimeSchedule(new Date(2022,MONTHS.JUL,5))
   ),
+  new TransactionSchedule(
+      new TransactionTemplate(TransactionType.Transfer,"Transfer to Savings",750,"savings","checking"),
+      new XPerMonthSchedule(2, new Date(2022,MONTHS.OCT,5))
+  ),
 ]
 
 let initialCategories = [
