@@ -1,6 +1,6 @@
 import React, {useState, useContext} from 'react';
 import { globalContext } from '../App';
-import { OneTimeSchedule, XPerMonthSchedule } from '../core/models';
+import { OneTimeSchedule, TransactionType, XPerMonthSchedule } from '../core/models';
 import NewTransactionForm from './NewTransactionForm';
 import './TransactionList.css';
 
@@ -31,21 +31,17 @@ const TransactionList = (props) => {
               categoryName = category.displayName;
             }
           }
+          let amountClass = transaction.template.type === TransactionType.Expense ? 'expense' : 'income'
           return (
             <div key={idx} className='transaction'>
               <button className='delete-transaction-button' onClick={()=>removeScheduledTransaction(transaction.id)}>❌</button>
               <div className='transaction-details'>
                 <div className='transaction-left'>
-                  {transaction.template.amount < 0 ?
-                    <div className='expense amount'>
-                      ${-transaction.template.amount}
-                    </div> :
-                    <div className='income amount'>
-                      ${transaction.template.amount}
-                    </div>
-                  }
+                  <div className={`${amountClass} amount`}>
+                    ${transaction.template.amount}
+                  </div>
                   <div className='account'>
-                    Account: {transaction.template.account}
+                    Account: {transaction.template.targetAccount}
                   </div>
                 </div>
                 <div className='transaction-right'>

@@ -255,7 +255,7 @@ export class MonthSummary {
     addSnapshot(snapshot) {
         this.snapshots.push(snapshot);
         let details = snapshot.mostRecentEvent.details;
-        let changes = this.report.accountChanges.get(details.account);
+        let changes = this.report.accountChanges.get(details.targetAccount);
         if (details.amount > 0) {
             changes.totalIncome += details.amount
             this.report.totalIncome += details.amount

@@ -34,7 +34,7 @@ export default class ForecastService {
             }
             let details = event.details;
             accountsCopy = this.copyAccounts(accountsCopy)
-            let changedAccount = accountsCopy.get(details.account)
+            let changedAccount = accountsCopy.get(details.targetAccount)
             if (changedAccount) {
                 // console.log("\n--- "+format(event.date)+" ---")
                 // let sign = details.amount > 0 ? '💹' : '🔻'
