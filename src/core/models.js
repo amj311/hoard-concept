@@ -46,13 +46,13 @@ export class XPerMonthSchedule extends Schedule {
         }
     }
 
-    getOccurrencesBetween(date,end) {
-        date = newMoment(date)
-        end = newMoment(end)
+    getOccurrencesBetween(start,finish) {
+        let date = newMoment(start)
+        let end = newMoment(finish)
+
         if (end.isBefore(this.startDate) || this.endDate?.isBefore(date)) return [];
-        
-        if (date.isBefore(this.startDate)) date = this.startDate;
-        if (this.endDate && this.endDate.isBefore(end)) end = this.endDate;
+        if (date.isBefore(this.startDate)) date = moment(this.startDate);
+        if (this.endDate && this.endDate.isBefore(end)) moment(end = this.endDate);
 
         let occurrences = [];
 
