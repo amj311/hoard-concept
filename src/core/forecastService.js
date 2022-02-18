@@ -1,5 +1,5 @@
 import { newMoment } from "./dateUtils"
-import { MonthSummary, Snapshot, Account } from "./models"
+import { MonthSummary, Snapshot, Account, TransactionType } from "./models"
 import TransactionService from "./transactionService"
 
 export default class ForecastService {
@@ -34,18 +34,36 @@ export default class ForecastService {
             }
             let details = event.details;
             accountsCopy = this.copyAccounts(accountsCopy)
-            let changedAccount = accountsCopy.get(details.targetAccount)
-            if (changedAccount) {
-                // console.log("\n--- "+format(event.date)+" ---")
-                // let sign = details.amount > 0 ? '💹' : '🔻'
-                // console.log(sign+" $"+Math.abs(details.amount)+" for "+details.memo)
+
+            // Handle Income
+            if (details.type === TransactionType.Income) {
+                let changedAccount = accountsCopy.get(details.targetAccount)
                 changedAccount.balance += details.amount
-                // console.log(changedAccount.toString())
-                // if (changedAccount.balance < 0) {
-                //     console.log("⭕ NEGATIVE BALANCE !!!")
-                // }
-                month.addSnapshot(new Snapshot(accountsCopy,event))
             }
+
+            if (details.type === TransactionType.Expense) {
+                let changedAccount = accountsCopy.get(details.targetAccount)
+                changedAccount.balance -= details.amount
+            }
+
+            if (details.type === TransactionType.Transfer) {
+                let target = accountsCopy.get(details.targetAccount)
+                let origin = accountsCopy.get(details.originAccount)
+                target.balance += details.amount
+                origin.balance -= details.amount
+            }
+
+            // Nice logging per transaction, could be useful somewhere.
+            //
+            // console.log("\n--- "+format(event.date)+" ---")
+            // let sign = details.amount > 0 ? '💹' : '🔻'
+            // console.log(sign+" $"+Math.abs(details.amount)+" for "+details.memo)
+            // console.log(changedAccount.toString())
+            // if (changedAccount.balance < 0) {
+            //     console.log("⭕ NEGATIVE BALANCE !!!")
+            // }
+
+            month.addSnapshot(new Snapshot(accountsCopy,event))
         }
     
         monthlySummaries.push(month);
