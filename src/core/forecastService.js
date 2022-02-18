@@ -8,7 +8,9 @@ export default class ForecastService {
         end = newMoment(end);
     
         let events = [];
-        for (let t of scheduledTransactions) { events.push(...TransactionService.generateEventsBetween(now,end,t)) }
+        for (let t of scheduledTransactions) { 
+            events.push(...TransactionService.generateEventsBetween(now,end,t)) 
+        }
         events.sort((a,b)=>(a.date < b.date) ? -1 : ((a.date > b.date) ? 1 : 0));
     
         // set initial
@@ -17,11 +19,6 @@ export default class ForecastService {
             accounts.set(a.id,a)
         }
     
-        console.log("--- INITIAL STATE ---\n")
-        console.log("Accounts:")
-        for (let a  of initialBalances) {
-            console.log("  "+a.toString());
-        }
         let accountsCopy = this.copyAccounts(accounts)
         let monthlySummaries = [];
         let month = new MonthSummary(now, this.copyAccounts(accounts));
@@ -67,12 +64,6 @@ export default class ForecastService {
         }
     
         monthlySummaries.push(month);
-
-        console.log("\n\n--- FINAL STATE ---")
-        console.log("Accounts:")
-        for (let a of accounts.values()) {
-            console.log("  "+a.toString());
-        }
     
         return monthlySummaries;
     }

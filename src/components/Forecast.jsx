@@ -57,24 +57,24 @@ export default function Forecast() {
   
   useEffect(()=>{
     console.log("new forecast:", forecast)
-    if (!forecast) return;
+    if (!forecast || forecast.length === 0) return;
     let labels = [];
     let datasets = new Map(); // <accountId, account dataseries>
     labels.push("Today");
     accounts.forEach((account,i)=>{
-      console.log(account)
       let color = colors[i%colors.length]
       datasets.set(account.id, {label: account.id, data: [account.balance], borderColor:color, backgroundColor:color})
     })
     for (let month of forecast) {
       labels.push(month.date.format("MM-YYYY"))
-      month.printReport()
+      //month.printReport()
       for (let [accountId,account] of month.snapshots[month.snapshots.length-1].balances) {
         datasets.get(accountId).data.push(account.balance)
       }
     }
     setChartData({labels,datasets: Array.from(datasets.values())})
-    console.log("data: ",{labels,datasets})
+    // console.log("data: ",{labels,datasets})
+    // console.log("forecst finished, here's the transactions", transactions)
   }, [forecast])
 
 
