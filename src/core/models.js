@@ -46,13 +46,13 @@ export class XPerMonthSchedule extends Schedule {
         }
     }
 
-    getOccurrencesBetween(date,end) {
-        date = newMoment(date)
-        end = newMoment(end)
+    getOccurrencesBetween(start,finish) {
+        let date = newMoment(start)
+        let end = newMoment(finish)
+
         if (end.isBefore(this.startDate) || this.endDate?.isBefore(date)) return [];
-        
-        if (date.isBefore(this.startDate)) date = this.startDate;
-        if (this.endDate && this.endDate.isBefore(end)) end = this.endDate;
+        if (date.isBefore(this.startDate)) date = moment(this.startDate);
+        if (this.endDate && this.endDate.isBefore(end)) moment(end = this.endDate);
 
         let occurrences = [];
 
@@ -131,11 +131,19 @@ export class OneTimeSchedule extends Schedule {
 //     }
 // }
 
+export const TransactionType = {
+    Income: "Income",
+    Expense: "Expense",
+    Transfer: "Transfer",
+}
+
 export class TransactionTemplate {
-    constructor(memo,amount,account,categoryId=null) {
+    constructor(type,memo,amount,target,origin=null,categoryId=null) {
+        this.type = type;
         this.memo = memo;
         this.amount = amount;
-        this.account = account;
+        this.targetAccount = target;
+        this.originAccount = origin;
         this.categoryId = categoryId;
     }
 }
@@ -247,7 +255,7 @@ export class MonthSummary {
     addSnapshot(snapshot) {
         this.snapshots.push(snapshot);
         let details = snapshot.mostRecentEvent.details;
-        let changes = this.report.accountChanges.get(details.account);
+        let changes = this.report.accountChanges.get(details.targetAccount);
         if (details.amount > 0) {
             changes.totalIncome += details.amount
             this.report.totalIncome += details.amount
