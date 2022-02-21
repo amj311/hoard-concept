@@ -62,7 +62,8 @@ const TransactionList = (props) => {
                       From: {template.originAccount}
                       <br></br>
                       To: {template.targetAccount}
-                    </div> :
+                    </div>
+                    :
                     <div className='account'>
                       Account: {template.targetAccount}
                     </div>
