@@ -65,7 +65,7 @@ let scheduledTransactions = [
       new XPerMonthSchedule(2, new Date(2022,MONTHS.FEB,15), new Date(2022,MONTHS.MAY,5))
   ),
   new TransactionSchedule( // Clozd fulltime
-    new TransactionTemplate(TransactionType.Income,"Full TIme Salary",2500,"checking", null),
+    new TransactionTemplate(TransactionType.Income,"Full Time Salary",2500,"checking", null),
     new XPerMonthSchedule(2, new Date(2022,MONTHS.MAY,15))
   ),
 
