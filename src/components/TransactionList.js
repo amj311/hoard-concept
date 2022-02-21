@@ -57,9 +57,16 @@ const TransactionList = (props) => {
                     { template.type === TransactionType.Transfer && <span>⇆ </span> }
                     ${template.amount.toLocaleString('en-US')}
                   </div>
-                  <div className='account'>
-                    Account: {template.targetAccount}
-                  </div>
+                  {template.type === TransactionType.Transfer ?
+                    <div className='account'>
+                      From: {template.originAccount}
+                      <br></br>
+                      To: {template.targetAccount}
+                    </div> :
+                    <div className='account'>
+                      Account: {template.targetAccount}
+                    </div>
+                  }
                 </div>
               </div>
               
