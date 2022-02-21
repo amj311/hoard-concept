@@ -1,6 +1,6 @@
 import React, {useState, useContext} from 'react';
 import { globalContext } from '../App';
-import { OneTimeSchedule, XPerMonthSchedule } from '../core/models';
+import { OneTimeSchedule, TransactionType, XPerMonthSchedule } from '../core/models';
 import NewTransactionForm from './NewTransactionForm';
 import './TransactionList.css';
 
@@ -13,6 +13,12 @@ const TransactionList = (props) => {
     setTransactions(transactions.filter((transaction) => transaction.id !== id));
   };
 
+  const getAmountClass = (template) => {
+    if (template.type === TransactionType.Income) return 'income'
+    if (template.type === TransactionType.Expense) return 'expense'
+    if (template.type === TransactionType.Transfer) return 'transfer'
+  }
+
   return (
     <div>
       <div className='transaction-list-header'>
@@ -24,9 +30,11 @@ const TransactionList = (props) => {
       }
       <div className='transaction-list'>
         {transactions.map((transaction, idx) => {
+          let template = transaction.template;
+
           let categoryName;
-          if (transaction.template.categoryId) {
-            const category = categories.find((category) => category.id === transaction.template.categoryId);
+          if (template.categoryId) {
+            const category = categories.find((category) => category.id === template.categoryId);
             if (category) {
               categoryName = category.displayName;
             }
@@ -34,31 +42,35 @@ const TransactionList = (props) => {
           return (
             <div key={idx} className='transaction'>
               <button className='delete-transaction-button' onClick={()=>removeScheduledTransaction(transaction.id)}>❌</button>
+              
               <div className='transaction-details'>
                 <div className='transaction-left'>
-                  {transaction.template.amount < 0 ?
-                    <div className='expense amount'>
-                      ${-transaction.template.amount}
-                    </div> :
-                    <div className='income amount'>
-                      ${transaction.template.amount}
-                    </div>
-                  }
-                  <div className='account'>
-                    Account: {transaction.template.account}
-                  </div>
-                </div>
-                <div className='transaction-right'>
-                  <div className='memo'>
-                    {transaction.template.memo}
-                  </div>
-                  {categoryName &&
+                  <div className='memo'>{template.memo}</div>
+                  { categoryName &&
                     <div className='category'>
                       Category: {categoryName}
                     </div>
                   }
                 </div>
+                <div className='transaction-right'>
+                  <div className={`${getAmountClass(transaction.template)} amount`}>
+                    { template.type === TransactionType.Transfer && <span>⇆ </span> }
+                    ${template.amount.toLocaleString('en-US')}
+                  </div>
+                  {template.type === TransactionType.Transfer ?
+                    <div className='account'>
+                      From: {template.originAccount}
+                      <br></br>
+                      To: {template.targetAccount}
+                    </div>
+                    :
+                    <div className='account'>
+                      Account: {template.targetAccount}
+                    </div>
+                  }
+                </div>
               </div>
+              
               <div className='schedule-details'>
                 {transaction.schedule instanceof OneTimeSchedule &&
                   `One-time on ${transaction.schedule.date.format('MM-DD-YYYY')}`
