@@ -27,7 +27,8 @@ export default function AccountsList() {
   return (
     <div className="accounts-list">
         <div>
-            <h3>Accounts</h3><button onClick={toggleNew}>{showNew? '✖' : '➕'}</button>
+            <h3>Accounts</h3>
+            <button onClick={toggleNew}>{showNew? '✖' : '➕'}</button>
         </div>
         { showNew ?
             <div>

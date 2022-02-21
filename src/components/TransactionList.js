@@ -16,7 +16,7 @@ const TransactionList = (props) => {
   return (
     <div>
       <div className='transaction-list-header'>
-        <h2>Scheduled Transactions</h2>
+        <h3>Scheduled Transactions</h3>
         <button className='schedule-transaction-button' onClick={() => setCreateTransaction(!createTransaction)}>{createTransaction ? '✖' : '➕'}</button>
       </div>
       {createTransaction &&

@@ -1,0 +1,17 @@
+.category {
+  font-size: 18px;
+  margin: 10px;
+}
+
+.category-list-header {
+  display: grid;
+  grid-template-columns: 1fr 50px;
+}
+
+.create-category-button {
+  margin: auto;
+}
+
+.delete-category-button {
+  float: right;
+}
