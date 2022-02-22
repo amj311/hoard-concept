@@ -3,6 +3,7 @@ import { createContext, useState } from 'react';
 import AccountsList from './components/AccountsList';
 import Forecast from './components/Forecast';
 import TransactionList from './components/TransactionList';
+import CategoryList from './components/CategoryList';
 
 const {
   Account,
@@ -121,6 +122,7 @@ function App() {
         
       <div className="App">
         <AccountsList></AccountsList>
+        <CategoryList />
         <TransactionList />
         <Forecast></Forecast>
       </div>
