@@ -57,8 +57,7 @@ export default function Forecast() {
   const [endDate, setEndDate] = useState(date);
   const [forecastLength, setForecastLength] = useState(ForecastLength.Year);
 
-  let [accounts] = useContext(globalContext).accounts;
-  let [transactions] = useContext(globalContext).scheduled;
+  let {accounts, transactions} = useContext(globalContext);
 
   let [forecast, setForecast] = useState([]);
   let [chartData, setChartData] = useState(null); // {labels, datasets: {data, label, ...options} }
@@ -137,8 +136,10 @@ export default function Forecast() {
     for (let month of forecast) {
       labels.push(month.date.format("MM-YYYY"))
       //month.printReport()
-      for (let [accountId,account] of month.snapshots[month.snapshots.length-1].balances) {
-        datasets.get(accountId).data.push(account.balance)
+      if (month.snapshots.length > 0) {
+        for (let [accountId,account] of month.snapshots[month.snapshots.length-1].balances) {
+          datasets.get(accountId).data.push(account.balance)
+        }
       }
     }
     setChartData({labels,datasets: Array.from(datasets.values())})
@@ -153,7 +154,7 @@ export default function Forecast() {
       <div className='length-choices'>
         {Object.entries(ForecastLength).map(([k, v]) => {
           return (
-            <label><input type="radio" name="length" value={v} checked={forecastLength === v} onChange={(event) => setForecastLength(event.target.value)}/><span>{v}</span></label>
+            <label key={k}><input type="radio" name="length" value={v} checked={forecastLength === v} onChange={(event) => setForecastLength(event.target.value)}/><span>{v}</span></label>
           );
         })}
         {forecastLength === ForecastLength.Custom &&

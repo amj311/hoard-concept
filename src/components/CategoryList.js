@@ -6,7 +6,7 @@ import './CategoryList.css';
 import NewCategoryForm from './NewCategoryForm';
 
 const CategoryList = () => {
-  const [categories, setCategories] = useContext(globalContext).categories;
+  const {categories, setCategories} = useContext(globalContext);
   const [createCategory, setCreateCategory] = useState(false);
 
   const removeCategory = (id) => {

@@ -3,8 +3,7 @@ import { globalContext } from '../App';
 import './AccountsList.css'
 
 export default function AccountsList() {
-
-  let [accounts, setAccounts] = useContext(globalContext).accounts;
+  let {accounts, setAccounts} = useContext(globalContext);
   let [showNew, setShowNew]= useState(false)
 
   function createAccount(data) {

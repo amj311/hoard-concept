@@ -5,8 +5,7 @@ import NewTransactionForm from './NewTransactionForm';
 import './TransactionList.css';
 
 const TransactionList = (props) => {
-  const [transactions, setTransactions] = useContext(globalContext).scheduled;
-  const [categories, setCategories] = useContext(globalContext).categories;
+  const {transactions, categories, setTransactions} = useContext(globalContext);
   const [createTransaction, setCreateTransaction] = useState(false);
 
   const removeScheduledTransaction = (id) => {

@@ -4,10 +4,8 @@ import { globalContext } from '../App';
 import { OneTimeSchedule, TransactionSchedule, TransactionTemplate, TransactionType, XPerMonthSchedule } from '../core/models';
 
 const NewTransactionForm = (props) => {
-  const [categories] = useContext(globalContext).categories;
-  const [accounts] = useContext(globalContext).accounts;
+  const {categories, transactions, accounts, setTransactions} = useContext(globalContext);
 
-  const [transactions, setTransactions] = useContext(globalContext).scheduled;
   const [type, setType] = useState(TransactionType.Expense);
   const [amount, setAmount] = useState(0);
   const [memo, setMemo] = useState('');

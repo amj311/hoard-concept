@@ -1,10 +1,11 @@
-import './App.css';
-import { createContext, useState } from 'react';
-import { useParams } from "react-router-dom";
-import AccountsList from './components/AccountsList';
-import Forecast from './components/Forecast';
-import TransactionList from './components/TransactionList';
-import CategoryList from './components/CategoryList';
+import './Dashboard.css';
+import { createContext, useContext, useEffect, useState } from 'react';
+import AccountsList from '../components/AccountsList';
+import Forecast from '../components/Forecast';
+import TransactionList from '../components/TransactionList';
+import CategoryList from '../components/CategoryList';
+import { authContext, globalContext } from '../App';
+import api from '../core/api';
 
 const {
   Account,
@@ -14,14 +15,15 @@ const {
   OneTimeSchedule,
   Category,
   TransactionType
-} = require("./core/models")
-const { MONTHS } = require("./core/constants");
-const { newMoment } = require("./core/dateUtils");
-const ForecastService = require("./core/forecastService");
+} = require("../core/models")
+const { MONTHS } = require("../core/constants");
+const { newMoment } = require("../core/dateUtils");
+const ForecastService = require("../core/forecastService");
 
 
 // INITIAL DATA
 
+/*
 let initialAccounts = [
   new Account("checking",500),
   new Account("savings",20000),
@@ -108,28 +110,25 @@ let initialCategories = [
   new Category('food', 'Food')
 ];
 
-
-export const globalContext = createContext();
+*/
 
 function Dashboard() {
-  const { userID } = useParams();
-  let accounts = useState(initialAccounts);
-  let scheduled = useState(scheduledTransactions);
-  let categories = useState(initialCategories);
+  const {userID} = useContext(authContext);
+  const {accounts, categories, transactions, setAccounts, setCategories, setTransactions} = useContext(globalContext);
   
+  useEffect(() => {
+    setAccounts(api.getAccounts(userID));
+    setCategories(api.getCategories(userID));
+    setTransactions(api.getTransactions(userID));
+  }, []);
+
   return (
-    <globalContext.Provider value={{
-      accounts, scheduled, categories, userID
-    }}>
-        
       <div className="App">
         <AccountsList></AccountsList>
         <CategoryList />
         <TransactionList />
         <Forecast></Forecast>
       </div>
-      
-    </globalContext.Provider>
   );
 }
 

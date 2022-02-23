@@ -5,7 +5,7 @@ import { Category } from '../core/models';
 import idGenerator from '../util/idGenerator';
 
 const NewCategoryForm = (props) => {
-  const [categories, setCategories] = useContext(globalContext).categories;
+  const {categories, setCategories} = useContext(globalContext);
   const [name, setName] = useState("");
 
   const reset = () => {

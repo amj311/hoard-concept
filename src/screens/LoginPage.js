@@ -1,17 +1,26 @@
-import React, {useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import { useNavigate } from "react-router-dom";
+import { authContext } from '../App';
 
 import api from '../core/api';
 
 import './Home.css';
 
-const Home = () => {
+const LoginPage = () => {
+  const userID = useContext(authContext).userID;
+  const {setUserID} = useContext(authContext);
   const [username, setUsername] = useState("");
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (userID && navigate) {
+      navigate(`/dashboard`);
+    }
+  }, [navigate, userID]);
+
   const signin = async () => {
-    const userID = await api.getUserID(username);
-    if (!userID) {
+    const id = await api.getUserID(username);
+    if (!id) {
       const response = window.confirm("Username does not exist. Sign up instead?");
       if (response) {
         signup();
@@ -19,7 +28,7 @@ const Home = () => {
         return;
       }
     } else {
-      navigate(`/${userID}`);
+      setUserID(id);
     }
   };
 
@@ -28,10 +37,10 @@ const Home = () => {
       alert("Username must be at least 6 characters");
       return;
     }
-    const userID = await api.getUserID(username);
-    if (!userID) {
+    const id = await api.getUserID(username);
+    if (!id) {
       const user = await api.addUser(username);
-      navigate(`/${user.id}`);
+      setUserID(user.id);
     } else {
       const response = window.confirm("Username already exists. Sign in instead?");
       if (response) {
@@ -57,4 +66,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default LoginPage;
