@@ -1,5 +1,6 @@
 import './App.css';
 import { createContext, useState } from 'react';
+import { useParams } from "react-router-dom";
 import AccountsList from './components/AccountsList';
 import Forecast from './components/Forecast';
 import TransactionList from './components/TransactionList';
@@ -110,14 +111,15 @@ let initialCategories = [
 
 export const globalContext = createContext();
 
-function App() {
-  let accounts = useState(initialAccounts)
-  let scheduled = useState(scheduledTransactions)
+function Dashboard() {
+  const { userID } = useParams();
+  let accounts = useState(initialAccounts);
+  let scheduled = useState(scheduledTransactions);
   let categories = useState(initialCategories);
   
   return (
     <globalContext.Provider value={{
-      accounts, scheduled, categories
+      accounts, scheduled, categories, userID
     }}>
         
       <div className="App">
@@ -131,4 +133,4 @@ function App() {
   );
 }
 
-export default App;
+export default Dashboard;
