@@ -74,6 +74,9 @@ export default function Forecast() {
 
   const valueToDate = (value) => {
     const date = new Date(value);
+    if (isNaN(date)) {
+      return null;
+    }
     const dateAccountingForTimezone = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
     return dateAccountingForTimezone;
   };
@@ -154,7 +157,17 @@ export default function Forecast() {
           );
         })}
         {forecastLength === ForecastLength.Custom &&
-          <input className='date-picker' type="date" value={dateToValue(endDate)} onChange={(event) => setEndDate(valueToDate(event.target.valueAsNumber))}></input>
+          <input
+            className='date-picker'
+            type="date"
+            value={dateToValue(endDate)}
+            onChange={(event) => {
+              const date = valueToDate(event.target.valueAsNumber);
+              if (date) {
+                setEndDate(date);
+              }
+            }}>
+          </input>
         }
       </div>
       { chartData ?

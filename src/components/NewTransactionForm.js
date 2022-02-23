@@ -71,6 +71,9 @@ const NewTransactionForm = (props) => {
 
   const valueToDate = (value) => {
     const date = new Date(value);
+    if (isNaN(date)) {
+      return null;
+    }
     const dateAccountingForTimezone = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
     return dateAccountingForTimezone;
   };
@@ -115,14 +118,44 @@ const NewTransactionForm = (props) => {
       {frequencyType === 'ONCE' ?
         <>
           <label htmlFor='date'>Date: </label>
-          <input type='date' id='date' value={dateToValue(date)} onChange={(event) => setDate(valueToDate(event.target.valueAsNumber))}></input>
+          <input
+            type='date'
+            id='date'
+            value={dateToValue(date)}
+            onChange={(event) => {
+              const date = valueToDate(event.target.valueAsNumber);
+              if (date) {
+                setDate(date);
+              }
+            }}>
+          </input>
         </> :
         <>
           <label htmlFor='startDate'>Start Date: </label>
-          <input type='date' id='startDate' value={dateToValue(startDate)} onChange={(event) => setStartDate(valueToDate(event.target.valueAsNumber))}></input>
+          <input
+            type='date'
+            id='startDate'
+            value={dateToValue(startDate)}
+            onChange={(event) => {
+              const date = valueToDate(event.target.valueAsNumber);
+              if (date) {
+                setStartDate(date)
+              }
+            }}>
+          </input>
           <br />
           <label htmlFor='endDate'>End Date: </label>
-          <input type='date' id='endDate' value={endDate ? dateToValue(endDate) : undefined} onChange={(event) => setEndDate(valueToDate(event.target.valueAsNumber))}></input>
+          <input
+            type='date'
+            id='endDate'
+            value={endDate ? dateToValue(endDate) : undefined}
+            onChange={(event) => {
+              const date = valueToDate(event.target.valueAsNumber);
+              if (date) {
+                setEndDate(date);
+              }
+            }}>
+          </input>
         </>
       }
       <br />
