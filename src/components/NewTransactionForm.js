@@ -1,17 +1,19 @@
 import React, {useState, useContext} from 'react';
 
 import { globalContext } from '../App';
-import { OneTimeSchedule, TransactionSchedule, TransactionTemplate, XPerMonthSchedule } from '../core/models';
+import { OneTimeSchedule, TransactionSchedule, TransactionTemplate, TransactionType, XPerMonthSchedule } from '../core/models';
 
 const NewTransactionForm = (props) => {
-  const [categories, setCategories] = useContext(globalContext).categories;
-  const [accounts, setAccounts] = useContext(globalContext).accounts;
+  const [categories] = useContext(globalContext).categories;
+  const [accounts] = useContext(globalContext).accounts;
+
   const [transactions, setTransactions] = useContext(globalContext).scheduled;
-  const [type, setType] = useState('expense');
+  const [type, setType] = useState(TransactionType.Expense);
   const [amount, setAmount] = useState(0);
   const [memo, setMemo] = useState('');
-  const [account, setAccount] = useState('none');
-  const [category, setCategory] = useState('none');
+  const [targetAcct, setTargetAcct] = useState(undefined);
+  const [originAcct, setOriginAcct] = useState(undefined);
+  const [category, setCategory] = useState(undefined);
   const [frequencyType, setFrequencyType] = useState('ONCE');
   const [frequency, setFrequency] = useState(1);
   const [date, setDate] = useState(new Date());
@@ -19,11 +21,12 @@ const NewTransactionForm = (props) => {
   const [endDate, setEndDate] = useState(undefined);
 
   const reset = () => {
-    setType('expense');
+    setType(TransactionType.Expense);
     setAmount(0);
     setMemo('');
-    setAccount('none');
-    setCategory('none');
+    setTargetAcct(undefined);
+    setOriginAcct(undefined);
+    setCategory(undefined);
     setFrequencyType('ONCE');
     setFrequency(1);
     setDate(new Date());
@@ -37,8 +40,12 @@ const NewTransactionForm = (props) => {
       alert('Amount must be greater than 0');
       return;
     }
-    if (account === 'none') {
+    if (!targetAcct) {
       alert('Please select an account');
+      return;
+    }
+    if (type === TransactionType.Transfer && !originAcct) {
+      alert('Please speicify the "transfer from" account!');
       return;
     }
     let schedule;
@@ -48,10 +55,8 @@ const NewTransactionForm = (props) => {
       schedule = new XPerMonthSchedule(frequency, startDate, endDate);
     }
 
-    const transactionAmount = type === 'expense' ? -amount : amount;
-
     const newTransaction = new TransactionSchedule(
-      new TransactionTemplate(memo,transactionAmount,account,category === 'none' ? null : category),
+      new TransactionTemplate(type,memo,amount,targetAcct,originAcct,category),
       schedule
     );
 
@@ -78,32 +83,63 @@ const NewTransactionForm = (props) => {
     return dateAccountingForTimezone;
   };
 
+ 
   return (
     <form onSubmit={scheduleTransaction}>
+      <b>New Transaction</b>
+      <br/>
+      <br/>
+      
       <label htmlFor='type'>Type: </label>
       <select id='type' name='type' value={type} onChange={(event) => setType(event.target.value)}>
-        <option value='expense'>expense</option>
-        <option value='income'>income</option>
+        { Array.from(Object.values(TransactionType)).map(v=>(
+          <option key={v} value={v}>{v}</option>
+        ))}
       </select>
       <br />
       <label htmlFor='amount'>Amount: </label>
-      <input id="amount" type="number" step={0.01} value={amount} onChange={(event) => setAmount(event.target.valueAsNumber)} ></input>
+      <input id="amount" type="number" step={0.01} min="0" value={amount} onChange={(event) => setAmount(event.target.valueAsNumber)} ></input>
       <br />
+
+      { type === TransactionType.Transfer ?
+        <>
+          <label htmlFor='origin'>From: </label>
+          <select id='origin' name='origin' value={originAcct} onChange={(event) => setOriginAcct(event.target.value)}>
+            <option value={undefined}>Please select an account</option>
+            {accounts.map((account) => <option key={account.id} value={account.id}>{account.id}</option>)}
+          </select>
+          <br/>
+          <label htmlFor='target'>To: </label>
+          <select id='target' name='target' value={targetAcct} onChange={(event) => setTargetAcct(event.target.value)}>
+            <option value={undefined}>Please select an account</option>
+            {accounts.map((account) => <option key={account.id} value={account.id}>{account.id}</option>)}
+          </select>
+        </>
+        :
+        <>
+          <label htmlFor='account'>Account: </label>
+          <select id='account' name='account' value={targetAcct} onChange={(event) => setTargetAcct(event.target.value)}>
+            <option value={undefined}>Please select an account</option>
+            {accounts.map((account) => <option key={account.id} value={account.id}>{account.id}</option>)}
+          </select>
+        </>
+        
+      }
+      <br/>
+      <br/>
+
       <label htmlFor='memo'>Memo: </label>
       <input id="memo" type="text" value={memo} onChange={(event) => setMemo(event.target.value)}></input>
       <br />
-      <label htmlFor='account'>Account: </label>
-      <select id='account' name='account' value={account} onChange={(event) => setAccount(event.target.value)}>
-        <option value={'none'}>Please select an account</option>
-        {accounts.map((account) => <option key={account.id} value={account.id}>{account.id}</option>)}
-      </select>
-      <br />
+
       <label htmlFor='category'>Category: </label>
       <select id='category' name='category' value={category} onChange={(event) => setCategory(event.target.value)}>
-        <option value={'none'}>Please select a category</option>
+        <option value={undefined}>Please select a category</option>
         {categories.map((category) => <option key={category.id} value={category.id}>{category.displayName}</option>)}
       </select>
       <br />
+      <br />
+
       <label htmlFor='frequency'>Frequency: </label>
       <select id='frequency' name='frequency' value={frequencyType} onChange={(event) => setFrequencyType(event.target.value)}>
         <option value='ONCE'>One-time</option>

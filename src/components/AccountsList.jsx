@@ -27,7 +27,8 @@ export default function AccountsList() {
   return (
     <div className="accounts-list">
         <div>
-            <h3>Accounts</h3><button onClick={toggleNew}>{showNew? '✖' : '➕'}</button>
+            <h3>Accounts</h3>
+            <button onClick={toggleNew}>{showNew? '✖' : '➕'}</button>
         </div>
         { showNew ?
             <div>
@@ -42,7 +43,7 @@ export default function AccountsList() {
             { accounts.map(acct=>(
                 <div className="item" key={acct.id}>
                     <div style={{flexGrow:1}}>{acct.id}</div>
-                    <div>{acct.balance}</div>
+                    <div>${acct.balance.toLocaleString('en-US')}</div>
                     <button onClick={()=>removeAccount(acct)}>❌</button>
                 </div>
             ))}
