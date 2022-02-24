@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "ajv": "^8.10.0",
+    "ajv-formats": "^2.1.1",
     "express": "^4.17.3",
     "mysql2": "^2.3.3"
   },

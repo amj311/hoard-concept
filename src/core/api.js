@@ -5,7 +5,23 @@ const apiURL = 'http://localhost:8080';
 
 const api = {
   getUserID: async (username) => {
-    
+    return fetch(`${apiURL}/user/${username}/id`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'GET'
+    })
+      .then((response) => response.json())
+      .then((resBody) => {
+        if (resBody.error) {
+          throw Error(resBody.error);
+        }
+        return resBody.id;
+      })
+      .catch(async () => {
+        throw Error('Could not retrieve data');
+      });
   },
   getAccounts: (userID) => {
     return [
