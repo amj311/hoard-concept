@@ -4,8 +4,9 @@ import { newMoment } from "./dateUtils"
 import idGenerator from "../util/idGenerator"
 
 export class Account {
-    constructor(id,balance) {
+    constructor(id,name,balance) {
         this.id = id;
+        this.name = name;
         this.balance = balance;
     }
     toString() {
@@ -14,9 +15,10 @@ export class Account {
 }
 
 export class Category {
-    constructor(id,displayName=null) {
+    constructor(id,name,balance) {
         this.id = id;
-        this.displayName = displayName||id;
+        this.name = name;
+        this.balance = balance;
     }
 }
 

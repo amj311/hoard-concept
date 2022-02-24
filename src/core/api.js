@@ -14,6 +14,7 @@ const api = {
     })
       .then((response) => response.json())
       .then((resBody) => {
+        console.log(JSON.stringify(resBody));
         if (resBody.error) {
           throw Error(resBody.error);
         }
@@ -23,99 +24,232 @@ const api = {
         throw Error('Could not retrieve data');
       });
   },
-  getAccounts: (userID) => {
-    return [
-      new Account("checking",500),
-      new Account("savings",20000),
-    ];
+  getAccounts: async (userID) => {
+      return fetch(`${apiURL}/user/${userID}/account`, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        method: 'GET'
+      })
+        .then((response) => response.json())
+        .then((resBody) => {
+          console.log(JSON.stringify(resBody));
+          if (resBody.error) {
+            throw Error(resBody.error);
+          }
+          return resBody.accounts;
+        })
+        .catch(async () => {
+          throw Error('Could not retrieve data');
+        });
   },
-  getCategories: (userID) => {
-    return [
-      new Category('food', 'Food')
-    ];
+  getCategories: async (userID) => {
+    return fetch(`${apiURL}/user/${userID}/category`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'GET'
+    })
+      .then((response) => response.json())
+      .then((resBody) => {
+        console.log(JSON.stringify(resBody));
+        if (resBody.error) {
+          throw Error(resBody.error);
+        }
+        return resBody.categories;
+      })
+      .catch(async () => {
+        throw Error('Could not retrieve data');
+      });
   },
-  getTransactions: (userID) => {
-    return [
-      new TransactionSchedule( // Groceries
-        new TransactionTemplate(TransactionType.Expense,"Groceries",200,"checking", null, 'food'),
-        new XPerMonthSchedule(2, new Date(2021,MONTHS.APR,10))
-    ),
-    new TransactionSchedule( // Utilities
-        new TransactionTemplate(TransactionType.Expense,"Groceries",100,"checking", null),
-        new XPerMonthSchedule(1, new Date(2021,MONTHS.APR,10))
-    ),
-    new TransactionSchedule( // Car Insurance
-        new TransactionTemplate(TransactionType.Expense,"Car Insurance",80,"checking", null),
-        new XPerMonthSchedule(1, new Date(2021,MONTHS.APR,10))
-    ),
-    new TransactionSchedule( // Fun Money
-        new TransactionTemplate(TransactionType.Expense,"Fun Money",300,"checking", null),
-        new XPerMonthSchedule(1, new Date(2021,MONTHS.APR,10))
-    ),
-    new TransactionSchedule( // Child Care
-        new TransactionTemplate(TransactionType.Expense,"Child Care",12,"checking", null),
-        new XPerMonthSchedule(1, new Date(2021,MONTHS.APR,10))
-    ),
-    
-    new TransactionSchedule(
-      new TransactionTemplate(TransactionType.Expense,"Rent",550,"checking", null),
-      new XPerMonthSchedule(1, new Date(2020,MONTHS.FEB,5), new Date(2022,MONTHS.JUL,5))
-    ),
-    new TransactionSchedule(
-        new TransactionTemplate(TransactionType.Expense,"Mortgage",2000,"checking", null),
-        new XPerMonthSchedule(1, new Date(2022,MONTHS.AUG,5))
-    ),
-    
-  
-    // Recurring Income Sources
-    new TransactionSchedule( // Clozd parttime (should actually be every 2 weeks)
-        new TransactionTemplate(TransactionType.Income,"Student Job PT",1000,"checking", null),
-        new XPerMonthSchedule(2, new Date(2022,MONTHS.FEB,15), new Date(2022,MONTHS.MAY,5))
-    ),
-    new TransactionSchedule( // Clozd fulltime
-      new TransactionTemplate(TransactionType.Income,"Full Time Salary",2500,"checking", null),
-      new XPerMonthSchedule(2, new Date(2022,MONTHS.MAY,15))
-    ),
-  
-  
-    // Recurring Transfers
-    new TransactionSchedule(
-      new TransactionTemplate(TransactionType.Transfer,"Transfer",750,"savings","checking"),
-      new XPerMonthSchedule(1, new Date(2022,MONTHS.JAN,5), new Date(2022,MONTHS.MAY,5))
-    ),
-    new TransactionSchedule(
-      new TransactionTemplate(TransactionType.Transfer,"Transfer",1700,"savings","checking"),
-      new XPerMonthSchedule(2, new Date(2022,MONTHS.MAY,15), new Date(2022,MONTHS.JUL,30))
-    ),
-    new TransactionSchedule(
-      new TransactionTemplate(TransactionType.Transfer,"Transfer",1000,"savings","checking"),
-      new XPerMonthSchedule(2, new Date(2022,MONTHS.AUG,15))
-    ),
-  
-  
-    // One-Time Transactions
-    new TransactionSchedule(
-      new TransactionTemplate(TransactionType.Expense,"Graduation Party",100,"checking", null),
-      new OneTimeSchedule(new Date(2022,MONTHS.APR,22))
-    ),
-    new TransactionSchedule(
-        new TransactionTemplate(TransactionType.Expense,"Down Payment",20000,"savings", null),
-        new OneTimeSchedule(new Date(2022,MONTHS.JUL,5))
-    ),
-    new TransactionSchedule(
-        new TransactionTemplate(TransactionType.Expense,"Closing Costs",10000,"savings", null),
-        new OneTimeSchedule(new Date(2022,MONTHS.JUL,5))
-    ),
-    ]
+  getTransactions: async (userID) => {
+    return fetch(`${apiURL}/user/${userID}/category`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'GET'
+    })
+      .then((response) => response.json())
+      .then((resBody) => {
+        console.log(JSON.stringify(resBody));
+        if (resBody.error) {
+          throw Error(resBody.error);
+        }
+        return resBody.transactions;
+      })
+      .catch(async () => {
+        throw Error('Could not retrieve data');
+      });
   },
-  addUser: async (username) => { return ({id: 'userID', username})},
-  addAccount: (userID, account) => {},
-  addCategory: (userID, category) => {},
-  addTransaction: (userID, transaction) => {},
-  deleteUser: (userID) => {},
-  deleteAccount: (accountID) => {},
-  deleteCategory: (categoryID) => {},
-  deleteTransaction: (transactionID) => {},
+  addUser: async (username) => { 
+    return fetch(`${apiURL}/user`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: {
+        username
+      }
+    })
+      .then((response) => response.json())
+      .then((resBody) => {
+        console.log(JSON.stringify(resBody));
+        if (resBody.error) {
+          throw Error(resBody.error);
+        }
+        return;
+      })
+      .catch(async () => {
+        throw Error('Could not retrieve data');
+      });
+  },
+  addAccount: async (userID, account) => {
+    return fetch(`${apiURL}/user/${userID}/account`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: account
+    })
+      .then((response) => response.json())
+      .then((resBody) => {
+        console.log(JSON.stringify(resBody));
+        if (resBody.error) {
+          throw Error(resBody.error);
+        }
+        return;
+      })
+      .catch(async () => {
+        throw Error('Could not retrieve data');
+      });
+  },
+  addCategory: async (userID, category) => {
+    return fetch(`${apiURL}/user/${userID}/category`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: category
+    })
+      .then((response) => response.json())
+      .then((resBody) => {
+        console.log(JSON.stringify(resBody));
+        if (resBody.error) {
+          throw Error(resBody.error);
+        }
+        return;
+      })
+      .catch(async () => {
+        throw Error('Could not retrieve data');
+      });
+  },
+  addTransaction: async (userID, transaction) => {
+    return fetch(`${apiURL}/user/${userID}/transaction`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: transaction
+    })
+      .then((response) => response.json())
+      .then((resBody) => {
+        console.log(JSON.stringify(resBody));
+        if (resBody.error) {
+          throw Error(resBody.error);
+        }
+        return;
+      })
+      .catch(async () => {
+        throw Error('Could not retrieve data');
+      });
+  },
+  deleteUser: async (userID) => {
+    return fetch(`${apiURL}/user/${userID}`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'DELETE'
+    })
+      .then((response) => response.status === 204 ? {} : response.json())
+      .then((resBody) => {
+        console.log(JSON.stringify(resBody));
+        if (resBody.error) {
+          throw Error(resBody.error);
+        }
+        return;
+      })
+      .catch(async () => {
+        throw Error('Could not retrieve data');
+      });
+  },
+  deleteAccount: async (accountID) => {
+    return fetch(`${apiURL}/account/${accountID}`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'DELETE'
+    })
+      .then((response) => response.status === 204 ? {} : response.json())
+      .then((resBody) => {
+        console.log(JSON.stringify(resBody));
+        if (resBody.error) {
+          throw Error(resBody.error);
+        }
+        return;
+      })
+      .catch(async () => {
+        throw Error('Could not retrieve data');
+      });
+  },
+  deleteCategory: async (categoryID) => {
+    return fetch(`${apiURL}/category/${categoryID}`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'DELETE'
+    })
+      .then((response) => response.status === 204 ? {} : response.json())
+      .then((resBody) => {
+        console.log(JSON.stringify(resBody));
+        if (resBody.error) {
+          throw Error(resBody.error);
+        }
+        return;
+      })
+      .catch(async () => {
+        throw Error('Could not retrieve data');
+      });
+  },
+  deleteTransaction: async (transactionID) => {
+  return fetch(`${apiURL}/transaction/${transactionID}`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    method: 'DELETE'
+  })
+    .then((response) => response.status === 204 ? {} : response.json())
+    .then((resBody) => {
+      console.log(JSON.stringify(resBody));
+      if (resBody.error) {
+        throw Error(resBody.error);
+      }
+      return;
+    })
+    .catch(async () => {
+      throw Error('Could not retrieve data');
+    });
+  }
 };
 
 export default api;
