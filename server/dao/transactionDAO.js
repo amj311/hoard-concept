@@ -10,8 +10,8 @@ const transactionDAO = {
   },
   addTransaction: async (transaction) => {
     const pool = await getPool();
-    const query = pool.query(sql`INSERT INTO transactions (id, type, amount, memo, frequencyType, frequencyPeriod, startDate, endDate, userID, accountID, categoryID)
-      VALUES (${transaction.id}, ${transaction.type}, ${transaction.amount}, ${transaction.memo}, ${transaction.frequencyType}, ${transaction.frequencyPeriod}, ${transaction.startDate}, ${transaction.endDate}, ${transaction.userID}, ${transaction.accountID}, ${transaction.categoryID})`);
+    const query = pool.query(sql`INSERT INTO transactions (id, type, amount, memo, frequencyType, frequencyPeriod, startDate, endDate, userID, targetAccount, originAccount, categoryID)
+      VALUES (${transaction.id}, ${transaction.type}, ${transaction.amount}, ${transaction.memo}, ${transaction.frequencyType}, ${transaction.frequencyPeriod}, ${transaction.startDate}, ${transaction.endDate}, ${transaction.userID}, ${transaction.targetAccount}, ${transaction.originAccount}, ${transaction.categoryID})`);
     const result = await query;
     return result[0].insertId;
   },

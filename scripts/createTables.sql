@@ -32,7 +32,7 @@ CREATE TABLE categories (
 
 CREATE TABLE transactions (
 	id VARCHAR(36) NOT NULL,
-	`type` ENUM('INCOME', 'EXPENSE', 'TRANSFER') NOT NULL,
+	`type` ENUM('Income', 'Expense', 'Transfer') NOT NULL,
     amount BIGINT NOT NULL,
     memo VARCHAR(100),
     frequencyType VARCHAR(50) NOT NULL,
@@ -40,10 +40,12 @@ CREATE TABLE transactions (
     startDate DATE NOT NULL,
     endDate DATE,
     userID varchar(36) NOT NULL,
-    accountID varchar(36) NOT NULL,
+    targetAccount varchar(36) NOT NULL,
+    originAccount varchar(36),
     categoryID varchar(36),
     PRIMARY KEY (id),
     FOREIGN KEY (userID) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (accountID) REFERENCES accounts (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (targetAccount) REFERENCES accounts (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (originAccount) REFERENCES accounts (id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (categoryID) REFERENCES categories (id) ON DELETE SET NULL ON UPDATE CASCADE
 );

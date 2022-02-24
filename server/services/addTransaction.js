@@ -13,7 +13,7 @@ const schema = {
       type: "object",
       properties: {
         type: {
-          enum: ['INCOME', 'EXPENSE', 'TRANSFER']
+          enum: ['Income', 'Expense', 'Transfer']
         },
         amount: {
           type: "integer",
@@ -36,7 +36,10 @@ const schema = {
         endDate: {
           type: "date"
         },
-        accountID: {
+        targetAccount: {
+          type: "string"
+        },
+        originAccount: {
           type: "string"
         },
         categoryID: {

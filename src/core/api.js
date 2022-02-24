@@ -1,5 +1,5 @@
 import { MONTHS } from "./constants";
-import { Account, Category, OneTimeSchedule, TransactionSchedule, TransactionTemplate, TransactionType, XPerMonthSchedule } from "./models";
+import { Account, Category, FrequencyType, OneTimeSchedule, TransactionSchedule, TransactionTemplate, TransactionType, XPerMonthSchedule } from "./models";
 
 const apiURL = 'http://localhost:8080';
 
@@ -18,7 +18,7 @@ const api = {
         if (resBody.error) {
           throw Error(resBody.error);
         }
-        return resBody.id;
+        return resBody.userID;
       })
       .catch(async () => {
         throw Error('Could not retrieve data');
@@ -38,7 +38,7 @@ const api = {
           if (resBody.error) {
             throw Error(resBody.error);
           }
-          return resBody.accounts;
+          return resBody.accounts.map(account => new Account(account.id, account.name, account.balance));
         })
         .catch(async () => {
           throw Error('Could not retrieve data');
@@ -58,7 +58,7 @@ const api = {
         if (resBody.error) {
           throw Error(resBody.error);
         }
-        return resBody.categories;
+        return resBody.categories.map(category => new Category(category.id, category.name, category.balance));
       })
       .catch(async () => {
         throw Error('Could not retrieve data');
@@ -78,7 +78,20 @@ const api = {
         if (resBody.error) {
           throw Error(resBody.error);
         }
-        return resBody.transactions;
+        return resBody.transactions.map((transaction) => {
+          let schedule;
+          switch(transaction.frequencyType) {
+            case FrequencyType.Once:
+              schedule = new OneTimeSchedule(transaction.startDate);
+              break;
+            case FrequencyType.PerMonth:
+              schedule = new XPerMonthSchedule(transaction.frequencyPeriod, transaction.startDate, transaction.endDate);
+              break;
+            default:
+              throw Error('Transaction frequency type not recognized');
+          }
+          return new TransactionSchedule(transaction.id, new TransactionTemplate(transaction.type, transaction.memo, transaction.amount, transaction.targetAccount, transaction.originAccount, transaction.categoryID), schedule);
+        });
       })
       .catch(async () => {
         throw Error('Could not retrieve data');

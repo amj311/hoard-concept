@@ -139,6 +139,11 @@ export const TransactionType = {
     Transfer: "Transfer",
 }
 
+export const FrequencyType = {
+    Once: "ONCE",
+    PerMonth: "PERMONTH"
+};
+
 export class TransactionTemplate {
     constructor(type,memo,amount,target,origin=null,categoryId=null) {
         this.type = type;
@@ -151,10 +156,10 @@ export class TransactionTemplate {
 }
 
 export class TransactionSchedule {
-    constructor(template,schedule) {
+    constructor(id, template,schedule) {
         this.schedule = schedule;
         this.template = template;
-        this.id = idGenerator();
+        this.id = id;
     }
 }
 
