@@ -1,8 +1,12 @@
 import { MONTHS } from "./constants";
 import { Account, Category, OneTimeSchedule, TransactionSchedule, TransactionTemplate, TransactionType, XPerMonthSchedule } from "./models";
 
+const apiURL = 'http://localhost:8080';
+
 const api = {
-  getUserID: (username) => {return 'userID'},
+  getUserID: async (username) => {
+    
+  },
   getAccounts: (userID) => {
     return [
       new Account("checking",500),
@@ -96,9 +100,6 @@ const api = {
   deleteAccount: (accountID) => {},
   deleteCategory: (categoryID) => {},
   deleteTransaction: (transactionID) => {},
-  updateAccount: (accountID, account) => {},
-  updateCategory: (categoryID, category) => {},
-  updateTransaction: (transactionID, transaction) => {}
 };
 
 export default api;
