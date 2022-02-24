@@ -1,9 +1,9 @@
 const config = require("../config");
+const mysql = require("mysql2/promise");
 
 let currentPool = undefined;
 
 const getPool = async () => {
-  /*
   if (currentPool === undefined) {
     const connectionParams =
       config.db.connection.path ?
@@ -23,7 +23,6 @@ const getPool = async () => {
     currentPool = newPool;
   }
   return currentPool;
-  */
 };
 
 module.exports = getPool;
