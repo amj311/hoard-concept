@@ -1,10 +1,12 @@
 import React, {useState, useContext} from 'react';
 
-import { globalContext } from '../App';
+import { authContext, globalContext } from '../App';
+import api from '../core/api';
 import { OneTimeSchedule, TransactionSchedule, TransactionTemplate, TransactionType, XPerMonthSchedule } from '../core/models';
 
 const NewTransactionForm = (props) => {
-  const {categories, transactions, accounts, setTransactions} = useContext(globalContext);
+  const {userID} = useContext(authContext);
+  const {categories, accounts, setTransactions} = useContext(globalContext);
 
   const [type, setType] = useState(TransactionType.Expense);
   const [amount, setAmount] = useState(0);
@@ -13,7 +15,7 @@ const NewTransactionForm = (props) => {
   const [originAcct, setOriginAcct] = useState(undefined);
   const [category, setCategory] = useState(undefined);
   const [frequencyType, setFrequencyType] = useState('ONCE');
-  const [frequency, setFrequency] = useState(1);
+  const [frequencyPeriod, setFrequency] = useState(1);
   const [date, setDate] = useState(new Date());
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(undefined);
@@ -32,7 +34,7 @@ const NewTransactionForm = (props) => {
     setEndDate(undefined);
   };
 
-  const scheduleTransaction = (event) => {
+  const scheduleTransaction = async (event) => {
     event.preventDefault();
     if (amount <= 0) {
       alert('Amount must be greater than 0');
@@ -43,22 +45,17 @@ const NewTransactionForm = (props) => {
       return;
     }
     if (type === TransactionType.Transfer && !originAcct) {
-      alert('Please speicify the "transfer from" account!');
+      alert('Please specify the "transfer from" account!');
       return;
     }
-    let schedule;
-    if (frequencyType === 'ONCE') {
-      schedule = new OneTimeSchedule(date);
-    } else if (frequencyType === 'MONTHLY') {
-      schedule = new XPerMonthSchedule(frequency, startDate, endDate);
+
+    try {
+      await api.addTransaction(userID, {type, amount, memo, frequencyType, frequencyPeriod, startDate, endDate, targetAccount: targetAcct, originAccount: originAcct, categoryID: category});
+      const transactions = api.getTransactions(userID);
+      setTransactions(transactions);
+    } catch (err) {
+      alert(err);
     }
-
-    const newTransaction = new TransactionSchedule(
-      new TransactionTemplate(type,memo,amount,targetAcct,originAcct,category),
-      schedule
-    );
-
-    setTransactions(transactions.concat([newTransaction]));
 
     reset();
     props.close();
@@ -145,7 +142,7 @@ const NewTransactionForm = (props) => {
       </select>
       {frequencyType === 'MONTHLY' &&
         <>
-          <input type='number' step={1} value={frequency} onChange={(event) => setFrequency(event.target.value)}></input>
+          <input type='number' step={1} value={frequencyPeriod} onChange={(event) => setFrequency(event.target.value)}></input>
           <span> times a month</span>
         </>}
       <br />

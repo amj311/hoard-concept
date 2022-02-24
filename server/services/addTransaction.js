@@ -31,10 +31,12 @@ const schema = {
           type: "integer",
         },
         startDate: {
-          type: "date"
+          type: "string",
+          format: "date"
         },
         endDate: {
-          type: "date"
+          type: "string",
+          format: "date"
         },
         targetAccount: {
           type: "string"

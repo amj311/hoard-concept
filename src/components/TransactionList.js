@@ -1,15 +1,23 @@
 import React, {useState, useContext} from 'react';
-import { globalContext } from '../App';
+import { authContext, globalContext } from '../App';
+import api from '../core/api';
 import { OneTimeSchedule, TransactionType, XPerMonthSchedule } from '../core/models';
 import NewTransactionForm from './NewTransactionForm';
 import './TransactionList.css';
 
 const TransactionList = (props) => {
+  const {userID} = useContext(authContext);
   const {transactions, categories, setTransactions} = useContext(globalContext);
   const [createTransaction, setCreateTransaction] = useState(false);
 
-  const removeScheduledTransaction = (id) => {
-    setTransactions(transactions.filter((transaction) => transaction.id !== id));
+  const removeScheduledTransaction = async (id) => {
+    try {
+      await api.deleteTransaction(id);
+      const transactions = await api.getCategories(userID);
+      setTransactions(transactions);
+    } catch (err) {
+      alert(err);
+    }
   };
 
   const getAmountClass = (template) => {

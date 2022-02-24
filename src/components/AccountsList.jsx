@@ -1,15 +1,24 @@
 import { useContext, useState } from 'react';
-import { globalContext } from '../App';
+import { authContext, globalContext } from '../App';
+import api from '../core/api';
 import './AccountsList.css'
 
 export default function AccountsList() {
+  const {userID} = useContext(authContext);
   let {accounts, setAccounts} = useContext(globalContext);
-  let [showNew, setShowNew]= useState(false)
+  let [showNew, setShowNew]= useState(false);
 
-  function createAccount(data) {
-      let id = document.getElementById("newAccountId").value;
+  async function createAccount(data) {
+      let name = document.getElementById("newAccountName").value;
       let balance = document.getElementById("newAccountBalance").value;
-      setAccounts(accounts.concat([{id, balance}]))
+
+      try {
+        await api.addAccount(userID, {name, currentBalance: balance });
+        const accounts = await api.getAccounts(userID);
+        setAccounts(accounts);
+      } catch (err) {
+        alert(err);
+      }
       
       document.getElementById("newAccountId").value = "";
       document.getElementById("newAccountBalance").value = "";
@@ -31,7 +40,10 @@ export default function AccountsList() {
         </div>
         { showNew ?
             <div>
-                <input id="newAccountId" />
+                <label htmlFor='newAccountName'>Name: </label>
+                <input id="newAccountName" />
+                <br />
+                <label htmlFor='newAccountBalance'>Starting balance: </label>
                 <input id="newAccountBalance" />
                 <button onClick={createAccount}>Create</button>
             </div>
@@ -42,7 +54,7 @@ export default function AccountsList() {
             { accounts.map(acct=>(
                 <div className="item" key={acct.id}>
                     <div style={{flexGrow:1}}>{acct.id}</div>
-                    <div>${acct.balance.toLocaleString('en-US')}</div>
+                    <div>${(acct.balance * 100).toLocaleString('en-US')}</div>
                     <button onClick={()=>removeAccount(acct)}>❌</button>
                 </div>
             ))}

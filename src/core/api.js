@@ -20,7 +20,8 @@ const api = {
         }
         return resBody.userID;
       })
-      .catch(async () => {
+      .catch((err) => {
+        console.error(err);
         throw Error('Could not retrieve data');
       });
   },
@@ -40,7 +41,8 @@ const api = {
           }
           return resBody.accounts.map(account => new Account(account.id, account.name, account.balance));
         })
-        .catch(async () => {
+        .catch((err) => {
+          console.error(err);
           throw Error('Could not retrieve data');
         });
   },
@@ -60,7 +62,8 @@ const api = {
         }
         return resBody.categories.map(category => new Category(category.id, category.name, category.balance));
       })
-      .catch(async () => {
+      .catch((err) => {
+        console.error(err);
         throw Error('Could not retrieve data');
       });
   },
@@ -93,7 +96,8 @@ const api = {
           return new TransactionSchedule(transaction.id, new TransactionTemplate(transaction.type, transaction.memo, transaction.amount, transaction.targetAccount, transaction.originAccount, transaction.categoryID), schedule);
         });
       })
-      .catch(async () => {
+      .catch((err) => {
+        console.error(err);
         throw Error('Could not retrieve data');
       });
   },
@@ -116,7 +120,8 @@ const api = {
         }
         return;
       })
-      .catch(async () => {
+      .catch((err) => {
+        console.error(err);
         throw Error('Could not retrieve data');
       });
   },
@@ -137,7 +142,8 @@ const api = {
         }
         return;
       })
-      .catch(async () => {
+      .catch((err) => {
+        console.error(err);
         throw Error('Could not retrieve data');
       });
   },
@@ -158,7 +164,8 @@ const api = {
         }
         return;
       })
-      .catch(async () => {
+      .catch((err) => {
+        console.error(err);
         throw Error('Could not retrieve data');
       });
   },
@@ -179,7 +186,8 @@ const api = {
         }
         return;
       })
-      .catch(async () => {
+      .catch((err) => {
+        console.error(err);
         throw Error('Could not retrieve data');
       });
   },
@@ -199,7 +207,8 @@ const api = {
         }
         return;
       })
-      .catch(async () => {
+      .catch((err) => {
+        console.error(err);
         throw Error('Could not retrieve data');
       });
   },
@@ -219,7 +228,8 @@ const api = {
         }
         return;
       })
-      .catch(async () => {
+      .catch((err) => {
+        console.error(err);
         throw Error('Could not retrieve data');
       });
   },
@@ -239,7 +249,8 @@ const api = {
         }
         return;
       })
-      .catch(async () => {
+      .catch((err) => {
+        console.error(err);
         throw Error('Could not retrieve data');
       });
   },
@@ -259,7 +270,8 @@ const api = {
       }
       return;
     })
-    .catch(async () => {
+    .catch((err) => {
+      console.error(err);
       throw Error('Could not retrieve data');
     });
   }

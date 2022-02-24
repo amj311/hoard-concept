@@ -1,16 +1,24 @@
 import React, {useState, useContext} from 'react';
 
-import { globalContext } from '../App';
+import { authContext, globalContext } from '../App';
+import api from '../core/api';
 
 import './CategoryList.css';
 import NewCategoryForm from './NewCategoryForm';
 
 const CategoryList = () => {
+  const {userID} = useContext(authContext);
   const {categories, setCategories} = useContext(globalContext);
   const [createCategory, setCreateCategory] = useState(false);
 
-  const removeCategory = (id) => {
-    setCategories(categories.filter((category) => category.id !== id));
+  const removeCategory = async (id) => {
+    try {
+      await api.deleteCategory(id);
+      const categories = await api.getCategories(userID);
+      setCategories(categories);
+    } catch (err) {
+      alert(err);
+    }
   };
 
   return (

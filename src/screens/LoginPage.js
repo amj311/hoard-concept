@@ -19,16 +19,20 @@ const LoginPage = () => {
   }, [navigate, userID]);
 
   const signin = async () => {
-    const id = await api.getUserID(username);
-    if (!id) {
-      const response = window.confirm("Username does not exist. Sign up instead?");
-      if (response) {
-        signup();
+    try {
+      const id = await api.getUserID(username);
+      if (!id) {
+        const response = window.confirm("Username does not exist. Sign up instead?");
+        if (response) {
+          signup();
+        } else {
+          return;
+        }
       } else {
-        return;
+        setUserID(id);
       }
-    } else {
-      setUserID(id);
+    } catch (err) {
+      alert(err);
     }
   };
 
@@ -37,17 +41,21 @@ const LoginPage = () => {
       alert("Username must be at least 6 characters");
       return;
     }
-    const id = await api.getUserID(username);
-    if (!id) {
-      const user = await api.addUser(username);
-      setUserID(user.id);
-    } else {
-      const response = window.confirm("Username already exists. Sign in instead?");
-      if (response) {
-        signin();
+    try {
+      const id = await api.getUserID(username);
+      if (!id) {
+        const user = await api.addUser(username);
+        setUserID(user.id);
       } else {
-        return;
+        const response = window.confirm("Username already exists. Sign in instead?");
+        if (response) {
+          signin();
+        } else {
+          return;
+        }
       }
+    } catch (err) {
+      alert(err);
     }
   };
 
