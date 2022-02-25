@@ -5,8 +5,20 @@ html {
 
 .App {
   padding: 2em;
+  background-color: #efefef;
 }
 
 .logout-button {
   float:right;
+}
+
+#logo {
+  text-align: center;
+  padding-bottom: 32px;
+}
+
+@media (max-width: 640px) {
+  #imgLogo {
+    width: 200px;
+  }
 }

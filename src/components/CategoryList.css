@@ -1,12 +1,24 @@
-
-.category-list .category {
-  font-size: 18px;
-  margin: 10px;
+#category {
+  margin-top: 40px;
+  text-align: left;
+  background-color: #ffffff;
+  box-shadow: 1px 3px 3px 0 rgba(131, 131, 131, 0.2);
+  border-radius: 15px;
+  padding: 10px;
 }
 
 .category-list-header {
-  display: grid;
-  grid-template-columns: 1fr 50px;
+  text-align: left;
+  padding-left: 20px;
+  font-size: x-large
+}
+
+.categoryButtonContainer {
+  padding: 20px;
+}
+
+.create-category-container {
+  padding-left: 50px;
 }
 
 .category {
@@ -27,4 +39,27 @@
 
 .category-balance {
   margin: 0.5em;
+}
+
+
+
+#name {
+  margin-right: 10px;
+}
+
+#createCatergoryButton {
+  font-size: larger;
+}
+
+.category-list {
+  padding: 20px;
+}
+
+.category-list .category {
+  font-size: 18px;
+  padding-bottom: 20px;
+}
+
+#categoryDeleteButton {
+  float: right;
 }

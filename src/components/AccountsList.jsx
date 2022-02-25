@@ -41,18 +41,20 @@ export default function AccountsList() {
   return (
     <div className="accounts-list">
         <div>
-            <h3>Accounts</h3>
-            <button onClick={toggleNew}>{showNew? '✖' : '➕'}</button>
+            <h3 className="accountsHeader">Accounts</h3>
+            <div id="acountsListButtonContainer">
+              <button className="hoardButton" onClick={toggleNew}>{showNew? '×' : '+'}</button>
+            </div>
         </div>
         { showNew ?
-            <div>
+            <div className="newAccountContainer">
                 <label htmlFor='newAccountName'>Name: </label>
                 <input id="newAccountName" />
                 <br />
                 <label htmlFor='newAccountBalance'>Starting balance: </label>
                 <input id="newAccountBalance" type="number" step={0.01} min="0" value={startingBalance / 100} onChange={(event) => setStartingBalance(event.target.valueAsNumber * 100)}></input>
                 <br></br>
-                <button onClick={createAccount}>Create</button>
+                <button className="hoardButton" onClick={createAccount}>Create</button>
             </div>
             :
             null
@@ -62,10 +64,9 @@ export default function AccountsList() {
                 <div className="item" key={acct.id}>
                     <div style={{flexGrow:1}}>{acct.name}</div>
                     <div>${(acct.balance / 100).toLocaleString('en-US')}</div>
-                    <button onClick={()=>removeAccount(acct)}>❌</button>
+                    <button className="deleteButton" id="delete-account-button" onClick={()=>removeAccount(acct)}>×</button>
                 </div>
             ))}
-
         </div>
     </div>
   );
