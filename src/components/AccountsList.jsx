@@ -27,14 +27,16 @@ export default function AccountsList() {
   return (
     <div className="accounts-list">
         <div>
-            <h3>Accounts</h3>
-            <button onClick={toggleNew}>{showNew? '✖' : '➕'}</button>
+            <h3 class="accountsHeader">Accounts</h3>
+            <div id="acountsListButtonContainer">
+              <button className="hoardButton" onClick={toggleNew}>{showNew? '×' : '+'}</button>
+            </div>
         </div>
         { showNew ?
-            <div>
-                <input id="newAccountId" />
-                <input id="newAccountBalance" />
-                <button onClick={createAccount}>Create</button>
+            <div class="newAccountContainer">
+                <input id="newAccountId" placeholder='name'/>
+                <input id="newAccountBalance" placeholder='balance'/>
+                <button class="hoardButton" onClick={createAccount}>Create</button>
             </div>
             :
             null
@@ -44,7 +46,7 @@ export default function AccountsList() {
                 <div className="item" key={acct.id}>
                     <div style={{flexGrow:1}}>{acct.id}</div>
                     <div>${acct.balance.toLocaleString('en-US')}</div>
-                    <button onClick={()=>removeAccount(acct)}>❌</button>
+                    <button className="deleteButton" id="delete-account-button" onClick={()=>removeAccount(acct)}>×</button>
                 </div>
             ))}
 

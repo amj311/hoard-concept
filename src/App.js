@@ -4,6 +4,7 @@ import AccountsList from './components/AccountsList';
 import Forecast from './components/Forecast';
 import TransactionList from './components/TransactionList';
 import CategoryList from './components/CategoryList';
+import Investment from './components/Investment';
 
 const {
   Account,
@@ -121,10 +122,14 @@ function App() {
     }}>
         
       <div className="App">
+        <div id="logo">
+          <img id="imgLogo" src="/hoardLogo.png"/>
+        </div>
         <AccountsList></AccountsList>
         <CategoryList />
         <TransactionList />
         <Forecast></Forecast>
+        <Investment></Investment>
       </div>
       
     </globalContext.Provider>
