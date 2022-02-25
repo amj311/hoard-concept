@@ -41,6 +41,10 @@ const LoginPage = () => {
       alert("Username must be at least 6 characters");
       return;
     }
+    if (!username.match(/^\S*$/g)) {
+      alert("Username can not have spaces");
+      return;
+    }
     try {
       const id = await api.getUserID(username);
       if (!id) {

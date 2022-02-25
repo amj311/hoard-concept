@@ -1,6 +1,7 @@
 const Ajv = require("ajv");
-const idGenerator = require("../../src/util/idGenerator");
+const idGenerator = require("../util/idGenerator");
 const categoryDAO = require("../dao/categoryDAO");
+const asyncHandler = require("../util/asyncHandler");
 
 const ajv = new Ajv();
 
@@ -40,7 +41,7 @@ const schema = {
 
 const validate = ajv.compile(schema);
 
-const addCategory = async (req, res) => {
+const addCategory = asyncHandler(async (req, res) => {
   const valid = validate(req);
   if (!valid) {
     console.error(validate.errors);
@@ -57,13 +58,15 @@ const addCategory = async (req, res) => {
     userID,
   };
 
-  const result = categoryDAO.addCategory(category);
+  const result = await categoryDAO.addCategory(category);
   console.log(result);
   if (result) {
-    return {category, status: 201};
+    res.status(201);
+    res.send({category, status: 201});
   } else {
-    return {status: 500, error: 'Something went wrong'}
+    res.status(500);
+    res.send({status: 500, error: 'Something went wrong'});
   }
-};
+});
 
 module.exports = addCategory;

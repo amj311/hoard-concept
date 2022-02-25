@@ -14,7 +14,7 @@ const getPool = async () => {
         };
     const newPool = await mysql.createPool({
       user: "root",
-      password: config.db.password,
+      password: process.env.DATABASE_PASSWORD,
       database: "hoard",
       ...connectionParams,
       connectionLimit: 1,

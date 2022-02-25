@@ -1,5 +1,6 @@
 const Ajv = require("ajv");
 const categoryDAO = require("../dao/categoryDAO");
+const asyncHandler = require("../util/asyncHandler");
 
 const ajv = new Ajv();
 
@@ -23,7 +24,7 @@ const schema = {
 
 const validate = ajv.compile(schema);
 
-const getCategories = async (req, res) => {
+const getCategories = asyncHandler(async (req, res) => {
   const valid = validate(req);
   if (!valid) {
     console.error(validate.errors);
@@ -32,13 +33,15 @@ const getCategories = async (req, res) => {
     return;
   }
 
-  const categories = categoryDAO.getUserCategories(req.params.id);
+  const categories = await categoryDAO.getUserCategories(req.params.id);
   console.log(categories);
   if (categories) {
-    return {categories, status: 200};
+    res.status(200);
+    res.send({categories, status: 200});
   } else {
-    return {status: 500, error: 'Something went wrong'}
+    res.status(500);
+    res.send({status: 500, error: 'Something went wrong'});
   }
-};
+});
 
 module.exports = getCategories;

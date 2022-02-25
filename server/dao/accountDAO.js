@@ -13,7 +13,7 @@ const accountDAO = {
     const query = pool.query(sql`INSERT INTO accounts (id, name, currentBalance, userID)
       VALUES (${account.id}, ${account.name}, ${account.currentBalance}, ${account.userID})`);
     const result = await query;
-    return result[0].insertId;
+    return result[0].affectedRows;
   },
   deleteAccount: async (accountID) => {
     const pool = await getPool();

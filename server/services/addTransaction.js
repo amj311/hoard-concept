@@ -1,7 +1,8 @@
 const Ajv = require("ajv");
 const addFormats = require("ajv-formats");
-const idGenerator = require("../../src/util/idGenerator");
+const idGenerator = require("../util/idGenerator");
 const transactionDAO = require("../dao/transactionDAO");
+const asyncHandler = require("../util/asyncHandler");
 
 const ajv = new Ajv();
 addFormats(ajv);
@@ -68,7 +69,7 @@ const schema = {
 
 const validate = ajv.compile(schema);
 
-const addTransaction = async (req, res) => {
+const addTransaction = asyncHandler(async (req, res) => {
   const valid = validate(req);
   if (!valid) {
     console.error(validate.errors);
@@ -85,13 +86,15 @@ const addTransaction = async (req, res) => {
     userID,
   };
 
-  const result = transactionDAO.addTransaction(transaction);
+  const result = await transactionDAO.addTransaction(transaction);
   console.log(result);
   if (result) {
-    return {transaction, status: 201};
+    res.status(201);
+    res.send({transaction, status: 201});
   } else {
-    return {status: 500, error: 'Something went wrong'}
+    res.status(500);
+    res.send({status: 500, error: 'Something went wrong'});
   }
-};
+});
 
 module.exports = addTransaction;

@@ -1,5 +1,6 @@
 const Ajv = require("ajv");
 const accountDAO = require("../dao/accountDAO");
+const asyncHandler = require("../util/asyncHandler");
 
 const ajv = new Ajv();
 
@@ -23,7 +24,7 @@ const schema = {
 
 const validate = ajv.compile(schema);
 
-const getAccounts = async (req, res) => {
+const getAccounts = asyncHandler(async (req, res) => {
   const valid = validate(req);
   if (!valid) {
     console.error(validate.errors);
@@ -32,13 +33,15 @@ const getAccounts = async (req, res) => {
     return;
   }
 
-  const accounts = accountDAO.getUserAccounts(req.params.id);
+  const accounts = await accountDAO.getUserAccounts(req.params.id);
   console.log(accounts);
   if (accounts) {
-    return {accounts, status: 200};
+    res.status(200);
+    res.send({accounts, status: 200});
   } else {
-    return {status: 500, error: 'Something went wrong'}
+    res.status(500);
+    res.send({status: 500, error: 'Something went wrong'});
   }
-};
+});
 
 module.exports = getAccounts;

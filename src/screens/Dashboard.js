@@ -116,15 +116,22 @@ function Dashboard() {
   const {userID} = useContext(authContext);
   const {accounts, categories, transactions, setAccounts, setCategories, setTransactions} = useContext(globalContext);
   
+  const setData = async () => {
+    const accountResult = await api.getAccounts(userID);
+    const categoryResult = await api.getCategories(userID);
+    const transactionResult = await api.getTransactions(userID);
+    setAccounts(accountResult);
+    setCategories(categoryResult);
+    setTransactions(transactionResult);
+  };
+
   useEffect(() => {
-    setAccounts(api.getAccounts(userID));
-    setCategories(api.getCategories(userID));
-    setTransactions(api.getTransactions(userID));
+    setData();
   }, []);
 
   return (
       <div className="App">
-        <AccountsList></AccountsList>
+        <AccountsList />
         <CategoryList />
         <TransactionList />
         <Forecast></Forecast>

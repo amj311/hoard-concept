@@ -1,5 +1,6 @@
 const Ajv = require("ajv");
 const userDAO = require("../dao/userDAO");
+const asyncHandler = require("../util/asyncHandler");
 
 const ajv = new Ajv();
 
@@ -23,7 +24,7 @@ const schema = {
 
 const validate = ajv.compile(schema);
 
-const deleteUser = async (req, res) => {
+const deleteUser = asyncHandler(async (req, res) => {
   const valid = validate(req);
   if (!valid) {
     console.error(validate.errors);
@@ -32,14 +33,16 @@ const deleteUser = async (req, res) => {
     return;
   }
 
-  const deleted = userDAO.deleteUser(req.params.id);
+  const deleted = await userDAO.deleteUser(req.params.id);
   console.log(deleted);
   if (deleted) {
-    return {deleted, status: 204};
+    res.status(204);
+    res.send();
   } else {
-    return {status: 500, error: 'Something went wrong'}
+    res.status(404);
+    res.send({status: 404, error: 'User not found'});
   }
-};
+});
 
 
 module.exports = deleteUser;

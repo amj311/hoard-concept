@@ -13,7 +13,7 @@ const categoryDAO = {
     const query = pool.query(sql`INSERT INTO categories (id, name, currentBalance, userID)
       VALUES (${category.id}, ${category.name}, ${category.currentBalance}, ${category.userID})`);
     const result = await query;
-    return result[0].insertId;
+    return result[0].affectedRows;
   },
   deleteCategory: async (categoryID) => {
     const pool = await getPool();

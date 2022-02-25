@@ -1,12 +1,17 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { authContext, globalContext } from '../App';
 import api from '../core/api';
 import './AccountsList.css'
 
 export default function AccountsList() {
   const {userID} = useContext(authContext);
-  let {accounts, setAccounts} = useContext(globalContext);
+  const {accounts, setAccounts} = useContext(globalContext);
   let [showNew, setShowNew]= useState(false);
+
+  useEffect(() => {
+    console.log('accounts');
+    console.log(accounts);
+  }, [accounts]);
 
   async function createAccount(data) {
       let name = document.getElementById("newAccountName").value;
@@ -51,7 +56,7 @@ export default function AccountsList() {
             null
         }
         <div className="list">
-            { accounts.map(acct=>(
+            {accounts.map(acct=>(
                 <div className="item" key={acct.id}>
                     <div style={{flexGrow:1}}>{acct.id}</div>
                     <div>${(acct.balance * 100).toLocaleString('en-US')}</div>

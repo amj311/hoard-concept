@@ -1,6 +1,7 @@
 const Ajv = require("ajv");
-const idGenerator = require("../../src/util/idGenerator");
+const idGenerator = require("../util/idGenerator");
 const userDAO = require("../dao/userDAO");
+const asyncHandler = require("../util/asyncHandler");
 
 const ajv = new Ajv();
 
@@ -13,7 +14,8 @@ const schema = {
         username: {
           type: "string",
           minLength: 6,
-          maxLength: 50
+          maxLength: 50,
+          pattern: "^\\S*$"
         }
       },
       required: ["username"],
@@ -26,7 +28,7 @@ const schema = {
 
 const validate = ajv.compile(schema);
 
-const addUser = async (req, res) => {
+const addUser = asyncHandler(async (req, res) => {
   const valid = validate(req);
   if (!valid) {
     console.error(validate.errors);
@@ -35,19 +37,32 @@ const addUser = async (req, res) => {
     return;
   }
 
-  const userID = idGenerator();
+  const id = idGenerator();
   const user = {
-    userID,
-    username: req.username
+    id,
+    username: req.body.username
   };
 
-  const result = userDAO.addUser(user);
-  console.log(result);
-  if (result) {
-    return {user, status: 201};
-  } else {
-    return {status: 409, error: 'Username unavailable'}
+  try {
+    const userAdded = await userDAO.addUser(user);
+    console.log(userAdded);
+    if (userAdded) {
+      res.status(201);
+      res.send({user, status: 201});
+    } else {
+      res.status(500);
+      res.send({status: 500, error: 'Something went wrong'});
+    }
+  } catch (err) {
+    if (err.code === 'ER_DUP_ENTRY') {
+      res.status(409);
+      res.send({status: 409, error: 'Username unavailable'});
+    } else {
+      res.status(500);
+      res.send({status: 500, error: 'Something went wrong'});
+    }
   }
-};
+  
+});
 
 module.exports = addUser;

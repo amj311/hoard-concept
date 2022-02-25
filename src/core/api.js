@@ -15,6 +15,9 @@ const api = {
       .then((response) => response.json())
       .then((resBody) => {
         console.log(JSON.stringify(resBody));
+        if (resBody.status === 404) {
+          return undefined;
+        }
         if (resBody.error) {
           throw Error(resBody.error);
         }
@@ -68,7 +71,7 @@ const api = {
       });
   },
   getTransactions: async (userID) => {
-    return fetch(`${apiURL}/user/${userID}/category`, {
+    return fetch(`${apiURL}/user/${userID}/transaction`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -108,17 +111,20 @@ const api = {
         'Content-Type': 'application/json',
       },
       method: 'POST',
-      body: {
+      body: JSON.stringify({
         username
-      }
+      })
     })
       .then((response) => response.json())
       .then((resBody) => {
         console.log(JSON.stringify(resBody));
+        if (resBody.status === 409) {
+          throw Error('Username taken');
+        }
         if (resBody.error) {
           throw Error(resBody.error);
         }
-        return;
+        return resBody.user;
       })
       .catch((err) => {
         console.error(err);
@@ -132,7 +138,7 @@ const api = {
         'Content-Type': 'application/json',
       },
       method: 'POST',
-      body: account
+      body: JSON.stringify(account)
     })
       .then((response) => response.json())
       .then((resBody) => {
@@ -154,7 +160,7 @@ const api = {
         'Content-Type': 'application/json',
       },
       method: 'POST',
-      body: category
+      body: JSON.stringify(category)
     })
       .then((response) => response.json())
       .then((resBody) => {
@@ -176,7 +182,7 @@ const api = {
         'Content-Type': 'application/json',
       },
       method: 'POST',
-      body: transaction
+      body: JSON.stringify(transaction)
     })
       .then((response) => response.json())
       .then((resBody) => {
