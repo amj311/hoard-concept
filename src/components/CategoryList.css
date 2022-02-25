@@ -21,6 +21,28 @@
   padding-left: 50px;
 }
 
+.category {
+  display: flex;
+}
+
+.create-category-button {
+  margin: auto;
+}
+
+.delete-category-button {
+  margin: auto;
+}
+
+.category-name {
+  flex-grow: 1;
+}
+
+.category-balance {
+  margin: 0.5em;
+}
+
+
+
 #name {
   margin-right: 10px;
 }

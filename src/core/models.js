@@ -4,8 +4,9 @@ import { newMoment } from "./dateUtils"
 import idGenerator from "../util/idGenerator"
 
 export class Account {
-    constructor(id,balance) {
+    constructor(id,name,balance) {
         this.id = id;
+        this.name = name;
         this.balance = balance;
     }
     toString() {
@@ -14,9 +15,10 @@ export class Account {
 }
 
 export class Category {
-    constructor(id,displayName=null) {
+    constructor(id,name,balance) {
         this.id = id;
-        this.displayName = displayName||id;
+        this.name = name;
+        this.balance = balance;
     }
 }
 
@@ -137,6 +139,11 @@ export const TransactionType = {
     Transfer: "Transfer",
 }
 
+export const FrequencyType = {
+    Once: "Once",
+    PerMonth: "Per month"
+};
+
 export class TransactionTemplate {
     constructor(type,memo,amount,target,origin=null,categoryId=null) {
         this.type = type;
@@ -149,10 +156,10 @@ export class TransactionTemplate {
 }
 
 export class TransactionSchedule {
-    constructor(template,schedule) {
+    constructor(id, template,schedule) {
         this.schedule = schedule;
         this.template = template;
-        this.id = idGenerator();
+        this.id = id;
     }
 }
 
