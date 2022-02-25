@@ -49,7 +49,7 @@ const schema = {
           type: "string"
         }
       },
-      required: ["type", "amount", "frequencyType", "frequencyPeriod", "startDate", "accountID"],
+      required: ["type", "amount", "frequencyType", "frequencyPeriod", "startDate", "targetAccount"],
       additionalProperties: false
     },
     params: {

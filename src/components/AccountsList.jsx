@@ -7,30 +7,31 @@ export default function AccountsList() {
   const {userID} = useContext(authContext);
   const {accounts, setAccounts} = useContext(globalContext);
   let [showNew, setShowNew]= useState(false);
+  const [startingBalance, setStartingBalance] = useState(0);
 
-  useEffect(() => {
-    console.log('accounts');
-    console.log(accounts);
-  }, [accounts]);
-
-  async function createAccount(data) {
+  async function createAccount() {
       let name = document.getElementById("newAccountName").value;
-      let balance = document.getElementById("newAccountBalance").value;
 
       try {
-        await api.addAccount(userID, {name, currentBalance: balance });
+        await api.addAccount(userID, {name, currentBalance: startingBalance });
         const accounts = await api.getAccounts(userID);
         setAccounts(accounts);
       } catch (err) {
         alert(err);
       }
       
-      document.getElementById("newAccountId").value = "";
-      document.getElementById("newAccountBalance").value = "";
+      setStartingBalance(0);
+      document.getElementById("newAccountName").value = "";
   }
 
-  function removeAccount(acct) {
-    setAccounts(accounts.filter(a=>a!==acct))
+  async function removeAccount(acct) {
+    try {
+      await api.deleteAccount(acct.id);
+      const accounts = await api.getAccounts(userID);
+      setAccounts(accounts);
+    } catch (err) {
+      alert(err);
+    }
   }
 
   function toggleNew() {
@@ -49,7 +50,8 @@ export default function AccountsList() {
                 <input id="newAccountName" />
                 <br />
                 <label htmlFor='newAccountBalance'>Starting balance: </label>
-                <input id="newAccountBalance" />
+                <input id="newAccountBalance" type="number" step={0.01} min="0" value={startingBalance / 100} onChange={(event) => setStartingBalance(event.target.valueAsNumber * 100)}></input>
+                <br></br>
                 <button onClick={createAccount}>Create</button>
             </div>
             :
@@ -58,8 +60,8 @@ export default function AccountsList() {
         <div className="list">
             {accounts.map(acct=>(
                 <div className="item" key={acct.id}>
-                    <div style={{flexGrow:1}}>{acct.id}</div>
-                    <div>${(acct.balance * 100).toLocaleString('en-US')}</div>
+                    <div style={{flexGrow:1}}>{acct.name}</div>
+                    <div>${(acct.balance / 100).toLocaleString('en-US')}</div>
                     <button onClick={()=>removeAccount(acct)}>❌</button>
                 </div>
             ))}

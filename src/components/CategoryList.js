@@ -33,10 +33,11 @@ const CategoryList = () => {
       <div className='category-list'>
         {categories.map((category) => (
           <div className='category' key={category.id}>
-            <button className='delete-category-button' onClick={()=>removeCategory(category.id)}>❌</button>
             <div className='category-name'>
-              {category.displayName}
+              {category.name}
             </div>
+            <div className='category-balance'>${(category.balance / 100).toLocaleString('en-US')}</div>
+            <button className='delete-category-button' onClick={()=>removeCategory(category.id)}>❌</button>
           </div>
         ))}
       </div>

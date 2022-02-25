@@ -7,13 +7,13 @@ import './TransactionList.css';
 
 const TransactionList = (props) => {
   const {userID} = useContext(authContext);
-  const {transactions, categories, setTransactions} = useContext(globalContext);
+  const {transactions, categories, accounts, setTransactions} = useContext(globalContext);
   const [createTransaction, setCreateTransaction] = useState(false);
 
   const removeScheduledTransaction = async (id) => {
     try {
       await api.deleteTransaction(id);
-      const transactions = await api.getCategories(userID);
+      const transactions = await api.getTransactions(userID);
       setTransactions(transactions);
     } catch (err) {
       alert(err);
@@ -43,9 +43,17 @@ const TransactionList = (props) => {
           if (template.categoryId) {
             const category = categories.find((category) => category.id === template.categoryId);
             if (category) {
-              categoryName = category.displayName;
+              categoryName = category.name;
             }
           }
+
+          const targetAccount = accounts.find((account) => account.id === template.targetAccount).name;
+
+          let originAccount;
+          if (template.originAccount) {
+            originAccount = accounts.find((account) => account.id === template.originAccount).name;
+          }
+
           return (
             <div key={idx} className='transaction'>
               <button className='delete-transaction-button' onClick={()=>removeScheduledTransaction(transaction.id)}>❌</button>
@@ -62,17 +70,17 @@ const TransactionList = (props) => {
                 <div className='transaction-right'>
                   <div className={`${getAmountClass(transaction.template)} amount`}>
                     { template.type === TransactionType.Transfer && <span>⇆ </span> }
-                    ${template.amount.toLocaleString('en-US')}
+                    ${(template.amount / 100).toLocaleString('en-US')}
                   </div>
                   {template.type === TransactionType.Transfer ?
                     <div className='account'>
-                      From: {template.originAccount}
+                      From: {originAccount}
                       <br></br>
-                      To: {template.targetAccount}
+                      To: {targetAccount}
                     </div>
                     :
                     <div className='account'>
-                      Account: {template.targetAccount}
+                      Account: {targetAccount}
                     </div>
                   }
                 </div>

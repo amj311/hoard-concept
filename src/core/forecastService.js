@@ -71,7 +71,7 @@ export default class ForecastService {
     static copyAccounts(accounts) {
         let newAccounts = new Map();
         for (let a of accounts.values()) {
-            newAccounts.set(a.id, new Account(a.id,Number(a.balance)))
+            newAccounts.set(a.id, new Account(a.id,a.name,Number(a.balance)))
         }
         return newAccounts
     }

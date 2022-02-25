@@ -9,10 +9,22 @@
   grid-template-columns: 1fr 50px;
 }
 
+.category {
+  display: flex;
+}
+
 .create-category-button {
   margin: auto;
 }
 
 .delete-category-button {
-  float: right;
+  margin: auto;
+}
+
+.category-name {
+  flex-grow: 1;
+}
+
+.category-balance {
+  margin: 0.5em;
 }

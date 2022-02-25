@@ -42,7 +42,7 @@ const api = {
           if (resBody.error) {
             throw Error(resBody.error);
           }
-          return resBody.accounts.map(account => new Account(account.id, account.name, account.balance));
+          return resBody.accounts.map(account => new Account(account.id, account.name, account.currentBalance));
         })
         .catch((err) => {
           console.error(err);
@@ -63,7 +63,7 @@ const api = {
         if (resBody.error) {
           throw Error(resBody.error);
         }
-        return resBody.categories.map(category => new Category(category.id, category.name, category.balance));
+        return resBody.categories.map(category => new Category(category.id, category.name, category.currentBalance));
       })
       .catch((err) => {
         console.error(err);
@@ -86,12 +86,13 @@ const api = {
         }
         return resBody.transactions.map((transaction) => {
           let schedule;
+          console.log(transaction.frequencyType);
           switch(transaction.frequencyType) {
             case FrequencyType.Once:
-              schedule = new OneTimeSchedule(transaction.startDate);
+              schedule = new OneTimeSchedule(new Date(transaction.startDate));
               break;
             case FrequencyType.PerMonth:
-              schedule = new XPerMonthSchedule(transaction.frequencyPeriod, transaction.startDate, transaction.endDate);
+              schedule = new XPerMonthSchedule(transaction.frequencyPeriod, new Date(transaction.startDate), transaction.endDate ? new Date(transaction.endDate) : undefined);
               break;
             default:
               throw Error('Transaction frequency type not recognized');

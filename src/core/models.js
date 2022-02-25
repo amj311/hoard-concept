@@ -140,8 +140,8 @@ export const TransactionType = {
 }
 
 export const FrequencyType = {
-    Once: "ONCE",
-    PerMonth: "PERMONTH"
+    Once: "Once",
+    PerMonth: "Per month"
 };
 
 export class TransactionTemplate {
