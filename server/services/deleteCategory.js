@@ -34,7 +34,6 @@ const deleteCategory = asyncHandler(async (req, res) => {
   }
 
   const deleted = await categoryDAO.deleteCategory(req.params.id);
-  console.log(deleted);
   if (deleted) {
     res.status(204);
     res.send();

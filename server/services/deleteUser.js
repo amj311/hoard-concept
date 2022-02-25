@@ -34,7 +34,6 @@ const deleteUser = asyncHandler(async (req, res) => {
   }
 
   const deleted = await userDAO.deleteUser(req.params.id);
-  console.log(deleted);
   if (deleted) {
     res.status(204);
     res.send();

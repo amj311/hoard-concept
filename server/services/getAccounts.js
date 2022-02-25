@@ -34,7 +34,6 @@ const getAccounts = asyncHandler(async (req, res) => {
   }
 
   const accounts = await accountDAO.getUserAccounts(req.params.id);
-  console.log(accounts);
   if (accounts) {
     res.status(200);
     res.send({accounts, status: 200});

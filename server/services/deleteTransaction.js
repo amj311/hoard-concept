@@ -34,7 +34,6 @@ const deleteTransaction = asyncHandler(async (req, res) => {
   }
 
   const deleted = await transactionDAO.deleteTransaction(req.params.id);
-  console.log(deleted);
   if (deleted) {
     res.status(204);
     res.send();

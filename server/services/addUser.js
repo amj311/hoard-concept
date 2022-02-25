@@ -45,7 +45,6 @@ const addUser = asyncHandler(async (req, res) => {
 
   try {
     const userAdded = await userDAO.addUser(user);
-    console.log(userAdded);
     if (userAdded) {
       res.status(201);
       res.send({user, status: 201});

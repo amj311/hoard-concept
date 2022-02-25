@@ -59,7 +59,6 @@ const addCategory = asyncHandler(async (req, res) => {
   };
 
   const result = await categoryDAO.addCategory(category);
-  console.log(result);
   if (result) {
     res.status(201);
     res.send({category, status: 201});

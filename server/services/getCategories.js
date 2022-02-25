@@ -34,7 +34,6 @@ const getCategories = asyncHandler(async (req, res) => {
   }
 
   const categories = await categoryDAO.getUserCategories(req.params.id);
-  console.log(categories);
   if (categories) {
     res.status(200);
     res.send({categories, status: 200});

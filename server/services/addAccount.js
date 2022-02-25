@@ -59,7 +59,6 @@ const addAccount = asyncHandler(async (req, res) => {
   };
 
   const result = await accountDAO.addAccount(account);
-  console.log(result);
   if (result) {
     res.status(201);
     res.send({account, status: 201});

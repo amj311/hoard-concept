@@ -34,7 +34,6 @@ const getUserID = asyncHandler(async (req, res) => {
   }
 
   const id = await userDAO.getUserID(req.params.username);
-  console.log(id);
   if (id) {
     res.status(200);
     res.send({userID: id, status: 200});

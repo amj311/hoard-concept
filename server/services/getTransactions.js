@@ -34,7 +34,6 @@ const getTransactions = asyncHandler(async (req, res) => {
   }
 
   const transactions = await transactionDAO.getUserTransactions(req.params.id);
-  console.log(transactions);
   if (transactions) {
     res.status(200);
     res.send({transactions, status: 200});

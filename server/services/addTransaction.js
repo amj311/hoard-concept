@@ -87,7 +87,6 @@ const addTransaction = asyncHandler(async (req, res) => {
   };
 
   const result = await transactionDAO.addTransaction(transaction);
-  console.log(result);
   if (result) {
     res.status(201);
     res.send({transaction, status: 201});

@@ -14,7 +14,6 @@ const api = {
     })
       .then((response) => response.json())
       .then((resBody) => {
-        console.log(JSON.stringify(resBody));
         if (resBody.status === 404) {
           return undefined;
         }
@@ -38,7 +37,6 @@ const api = {
       })
         .then((response) => response.json())
         .then((resBody) => {
-          console.log(JSON.stringify(resBody));
           if (resBody.error) {
             throw Error(resBody.error);
           }
@@ -59,7 +57,6 @@ const api = {
     })
       .then((response) => response.json())
       .then((resBody) => {
-        console.log(JSON.stringify(resBody));
         if (resBody.error) {
           throw Error(resBody.error);
         }
@@ -80,13 +77,11 @@ const api = {
     })
       .then((response) => response.json())
       .then((resBody) => {
-        console.log(JSON.stringify(resBody));
         if (resBody.error) {
           throw Error(resBody.error);
         }
         return resBody.transactions.map((transaction) => {
           let schedule;
-          console.log(transaction.frequencyType);
           switch(transaction.frequencyType) {
             case FrequencyType.Once:
               schedule = new OneTimeSchedule(new Date(transaction.startDate));
@@ -118,7 +113,6 @@ const api = {
     })
       .then((response) => response.json())
       .then((resBody) => {
-        console.log(JSON.stringify(resBody));
         if (resBody.status === 409) {
           throw Error('Username taken');
         }
@@ -143,7 +137,6 @@ const api = {
     })
       .then((response) => response.json())
       .then((resBody) => {
-        console.log(JSON.stringify(resBody));
         if (resBody.error) {
           throw Error(resBody.error);
         }
@@ -165,7 +158,6 @@ const api = {
     })
       .then((response) => response.json())
       .then((resBody) => {
-        console.log(JSON.stringify(resBody));
         if (resBody.error) {
           throw Error(resBody.error);
         }
@@ -187,7 +179,6 @@ const api = {
     })
       .then((response) => response.json())
       .then((resBody) => {
-        console.log(JSON.stringify(resBody));
         if (resBody.error) {
           throw Error(resBody.error);
         }
@@ -208,7 +199,6 @@ const api = {
     })
       .then((response) => response.status === 204 ? {} : response.json())
       .then((resBody) => {
-        console.log(JSON.stringify(resBody));
         if (resBody.error) {
           throw Error(resBody.error);
         }
@@ -229,7 +219,6 @@ const api = {
     })
       .then((response) => response.status === 204 ? {} : response.json())
       .then((resBody) => {
-        console.log(JSON.stringify(resBody));
         if (resBody.error) {
           throw Error(resBody.error);
         }
@@ -250,7 +239,6 @@ const api = {
     })
       .then((response) => response.status === 204 ? {} : response.json())
       .then((resBody) => {
-        console.log(JSON.stringify(resBody));
         if (resBody.error) {
           throw Error(resBody.error);
         }
@@ -271,7 +259,6 @@ const api = {
   })
     .then((response) => response.status === 204 ? {} : response.json())
     .then((resBody) => {
-      console.log(JSON.stringify(resBody));
       if (resBody.error) {
         throw Error(resBody.error);
       }
