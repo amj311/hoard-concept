@@ -23,6 +23,13 @@ function Dashboard() {
     setCategories(categoryResult);
     setTransactions(transactionResult);
   };
+  
+  const logout = () => {
+    setAccounts([]);
+    setCategories([]);
+    setTransactions([]);
+    setUserID(undefined);
+  }
 
   useEffect(() => {
     setData();
@@ -30,7 +37,7 @@ function Dashboard() {
 
   return (
       <div className="App">
-        <button className='logout-button' onClick={() => setUserID(undefined)}>Logout</button>
+        <button className='logout-button' onClick={logout}>Logout</button>
         <AccountsList />
         <CategoryList />
         <TransactionList />
