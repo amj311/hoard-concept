@@ -2,6 +2,7 @@ import React, {useState, useContext} from 'react';
 
 import { authContext, globalContext } from '../App';
 import api from '../core/api';
+import '../global.css';
 
 const NewCategoryForm = (props) => {
   const {userID} = useContext(authContext);
@@ -34,13 +35,16 @@ const NewCategoryForm = (props) => {
 
   return (
     <form className="create-category-container" onSubmit={createCategory}>
+      <b>New Category</b>
+      <br/>
+      <br/>
       <label htmlFor='name'>Name: </label>
       <input type="text" id="name" value={name} onChange={(event) => setName(event.target.value)}></input>
       <br />
       <label htmlFor='startingBalance'>Starting balance: </label>
-      <input id="startingBalance" type="number" step={0.01} min="0" value={startingBalance / 100} onChange={(event) => setStartingBalance(event.target.valueAsNumber * 100)} ></input>
+      <input id="startingBalance" type="number" step={0.01} min="0" value={startingBalance / 100} onChange={(event) => setStartingBalance(event.target.valueAsNumber * 100)} onWheel={(e) => e.target.blur()}></input>
       <br />
-      <input type="submit" className="hoardButton" id="createCatergoryButton" value="Create Category"></input>
+      <input type="submit" className="hoard-button" id="createCatergoryButton" value="Create Category"></input>
     </form>
   )
 };

@@ -6,3 +6,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+h2 {
+  text-align: left;
+  padding-left: 20px;
+  font-size: x-large;
+}

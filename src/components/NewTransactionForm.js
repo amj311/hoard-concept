@@ -3,7 +3,9 @@ import React, {useState, useContext} from 'react';
 import { authContext, globalContext } from '../App';
 import api from '../core/api';
 import { dateToValue, valueToDate } from '../core/dateUtils';
-import { FrequencyType, OneTimeSchedule, TransactionSchedule, TransactionTemplate, TransactionType, XPerMonthSchedule } from '../core/models';
+import { FrequencyType, TransactionType, XPerMonthSchedule } from '../core/models';
+
+import '../global.css';
 
 const NewTransactionForm = (props) => {
   const {userID} = useContext(authContext);
@@ -65,7 +67,6 @@ const NewTransactionForm = (props) => {
       <b>New Transaction</b>
       <br/>
       <br/>
-      
       <label htmlFor='type'>Type: </label>
       <select id='type' name='type' value={type} onChange={(event) => setType(event.target.value)}>
         { Array.from(Object.values(TransactionType)).map(v=>(
@@ -74,7 +75,7 @@ const NewTransactionForm = (props) => {
       </select>
       <br />
       <label htmlFor='amount'>Amount: </label>
-      <input id="amount" type="number" step={0.01} min="0" value={amount / 100} onChange={(event) => setAmount(event.target.valueAsNumber * 100)} ></input>
+      <input id="amount" type="number" step={0.01} min="0" value={amount / 100} onChange={(event) => setAmount(event.target.valueAsNumber * 100)} onWheel={(e) => e.target.blur()}></input>
       <br />
 
       { type === TransactionType.Transfer ?
@@ -108,8 +109,8 @@ const NewTransactionForm = (props) => {
       <input id="memo" type="text" value={memo} onChange={(event) => setMemo(event.target.value)}></input>
       <br />
 
-      <label htmlFor='category'>Category: </label>
-      <select id='category' name='category' value={category} onChange={(event) => setCategory(event.target.value)}>
+      <label htmlFor='category-selection'>Category: </label>
+      <select id='category-selection' name='category' value={category} onChange={(event) => setCategory(event.target.value)}>
         <option value={undefined}>Please select a category</option>
         {categories.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}
       </select>
@@ -172,7 +173,7 @@ const NewTransactionForm = (props) => {
         </>
       }
       <br />
-      <input type="submit" value="Schedule Transaction"></input>
+      <input className='hoard-button' type="submit" value="Schedule Transaction"></input>
     </form>
   );
 };

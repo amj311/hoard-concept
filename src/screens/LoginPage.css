@@ -1,0 +1,15 @@
+.container {
+  background-color: #efefef;
+  height: 100vh;
+}
+
+.signin {
+  width: fit-content;
+  margin: auto;
+  text-align: center;
+}
+
+#logo {
+  text-align: center;
+  padding: 32px 0;
+}
