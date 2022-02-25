@@ -1,0 +1,22 @@
+.length-choices input[type="radio"] {
+  display: none;
+}
+
+.length-choices span {
+  display: inline-block;
+  padding: 10px;
+  text-transform: uppercase;
+  border: 2px solid gold;
+  border-radius: 3px;
+  color: gold;
+  margin: 10px;
+}
+
+.length-choices input[type="radio"]:checked + span {
+  background-color: gold;
+  color: black;
+}
+
+.date-picker {
+  display: inline-block;
+}
