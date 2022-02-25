@@ -20,10 +20,10 @@ const TransactionList = (props) => {
   }
 
   return (
-    <div>
+    <div id="transaction-container">
       <div className='transaction-list-header'>
         <h3>Scheduled Transactions</h3>
-        <button className='schedule-transaction-button' onClick={() => setCreateTransaction(!createTransaction)}>{createTransaction ? '✖' : '➕'}</button>
+        <button className='hoardButton' id="schedule-transaction-button" onClick={() => setCreateTransaction(!createTransaction)}>{createTransaction ? '✖' : '+'}</button>
       </div>
       {createTransaction &&
         <NewTransactionForm close={() => setCreateTransaction(false)}/>
@@ -41,7 +41,7 @@ const TransactionList = (props) => {
           }
           return (
             <div key={idx} className='transaction'>
-              <button className='delete-transaction-button' onClick={()=>removeScheduledTransaction(transaction.id)}>❌</button>
+              <button  class="deleteButton" id='delete-transaction-button' onClick={()=>removeScheduledTransaction(transaction.id)}>×</button>
               
               <div className='transaction-details'>
                 <div className='transaction-left'>

@@ -14,10 +14,12 @@ const CategoryList = () => {
   };
 
   return (
-    <div>
-      <div className='category-list-header'>
-        <h3>Categories</h3>
-        <button className='create-category-button' onClick={() => setCreateCategory(!createCategory)}>{createCategory ? '✖' : '➕'}</button>
+    <div id="category">
+      <div>
+        <h3 className='category-list-header' >Categories</h3>
+        <div class="categoryButtonContainer">
+          <button className='hoardButton' onClick={() => setCreateCategory(!createCategory)}>{createCategory ? '×' : '+'}</button>
+        </div>
       </div>
       {createCategory &&
         <NewCategoryForm close={() => setCreateCategory(false)}/>
@@ -25,7 +27,7 @@ const CategoryList = () => {
       <div className='category-list'>
         {categories.map((category) => (
           <div className='category' key={category.id}>
-            <button className='delete-category-button' onClick={()=>removeCategory(category.id)}>❌</button>
+            <button id="categoryDeleteButton" className='deleteButton' onClick={()=>removeCategory(category.id)}>×</button>
             <div className='category-name'>
               {category.displayName}
             </div>

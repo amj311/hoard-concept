@@ -56,7 +56,7 @@ export default function Forecast() {
 
   
   useEffect(()=>{
-    console.log("new forecast:", forecast)
+    // console.log("new forecast:", forecast)
     if (!forecast || forecast.length === 0) return;
     let labels = [];
     let datasets = new Map(); // <accountId, account dataseries>

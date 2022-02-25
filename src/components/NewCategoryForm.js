@@ -28,11 +28,10 @@ const NewCategoryForm = (props) => {
   };
 
   return (
-    <form onSubmit={createCategory}>
+    <form class="create-category-container" onSubmit={createCategory}>
       <label htmlFor="name">Name: </label>
-      <input type="text" id="name" value={name} onChange={(event) => setName(event.target.value)}></input>
-      <br></br>
-      <input type="submit" value="Create Category"></input>
+      <input placeholder="category name" type="text" id="name" value={name} onChange={(event) => setName(event.target.value)}></input>
+      <input type="submit" class="hoardButton" id="createCatergoryButton" value="Create Category"></input>
     </form>
   )
 };
