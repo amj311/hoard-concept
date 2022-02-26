@@ -4,7 +4,7 @@ import { authContext } from '../App';
 
 import api from '../core/api';
 
-import './Home.css';
+import './LoginPage.css';
 
 const LoginPage = () => {
   const userID = useContext(authContext).userID;
@@ -64,15 +64,17 @@ const LoginPage = () => {
   };
 
   return (
-    <div>
-      <h2>Welcome to Hoard!</h2>
+    <div className='container'>
+      <div id="logo">
+        <img id="imgLogo" src="hoardLogo.png"/>
+      </div>
       <div className='signin'>
         <label htmlFor="username">Username: </label>
         <input id="username" type="text" value={username} onChange={(event) => setUsername(event.target.value)}></input>
         <br />
-        <button onClick={signin}>Sign In</button>
+        <button className='hoard-button' onClick={signin}>Sign In</button>
         <span> or </span>
-        <button onClick={signup}>Sign Up</button>
+        <button className='hoard-button' onClick={signup}>Sign Up</button>
       </div>
     </div>
   );

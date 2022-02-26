@@ -4,6 +4,7 @@ import api from '../core/api';
 import { OneTimeSchedule, TransactionType, XPerMonthSchedule } from '../core/models';
 import NewTransactionForm from './NewTransactionForm';
 import './TransactionList.css';
+import '../global.css';
 
 const TransactionList = (props) => {
   const {userID} = useContext(authContext);
@@ -28,9 +29,9 @@ const TransactionList = (props) => {
 
   return (
     <div id="transaction-container">
-      <div className='transaction-list-header'>
-        <h3>Scheduled Transactions</h3>
-        <button className='hoardButton' id="schedule-transaction-button" onClick={() => setCreateTransaction(!createTransaction)}>{createTransaction ? '✖' : '+'}</button>
+      <div className='header-with-button'>
+        <h2>Scheduled Transactions</h2>
+        <button className='hoard-button button-in-header' onClick={() => setCreateTransaction(!createTransaction)}>{createTransaction ? '×' : '+'}</button>
       </div>
       {createTransaction &&
         <NewTransactionForm close={() => setCreateTransaction(false)}/>
@@ -56,7 +57,7 @@ const TransactionList = (props) => {
 
           return (
             <div key={idx} className='transaction'>
-              <button  className="deleteButton" id='delete-transaction-button' onClick={()=>removeScheduledTransaction(transaction.id)}>×</button>
+              <button  className="delete-button" id='delete-transaction-button' onClick={()=>removeScheduledTransaction(transaction.id)}>×</button>
               
               <div className='transaction-details'>
                 <div className='transaction-left'>
