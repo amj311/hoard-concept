@@ -8,6 +8,10 @@ html {
   background-color: #efefef;
 }
 
+.logout-button {
+  float:right;
+}
+
 #logo {
   text-align: center;
   padding-bottom: 32px;

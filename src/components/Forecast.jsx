@@ -13,6 +13,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import { dateToValue, valueToDate } from '../core/dateUtils';
 // import faker from 'faker';
 
 ChartJS.register(
@@ -57,33 +58,13 @@ export default function Forecast() {
   const [endDate, setEndDate] = useState(date);
   const [forecastLength, setForecastLength] = useState(ForecastLength.Year);
 
-  let [accounts] = useContext(globalContext).accounts;
-  let [transactions] = useContext(globalContext).scheduled;
+  let {accounts, transactions} = useContext(globalContext);
 
   let [forecast, setForecast] = useState([]);
   let [chartData, setChartData] = useState(null); // {labels, datasets: {data, label, ...options} }
 
-
-  const dateToValue = (date) => {
-    const day = date.getUTCDate();
-    const dayString = day < 10 ? `0${day}` : `${day}`;
-    const month = date.getUTCMonth() + 1;
-    const monthString = month < 10 ? `0${month}` : `${month}`;
-    return `${date.getUTCFullYear()}-${monthString}-${dayString}`;
-  };
-
-  const valueToDate = (value) => {
-    const date = new Date(value);
-    if (isNaN(date)) {
-      return null;
-    }
-    const dateAccountingForTimezone = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
-    return dateAccountingForTimezone;
-  };
-
   useEffect(() => {
     const now = new Date();
-    console.log(now);
     let end = new Date();
     switch(forecastLength) {
       case ForecastLength.Day:
@@ -113,7 +94,6 @@ export default function Forecast() {
       default:
         return;
     }
-    console.log(end);
     setEndDate(end);
   }, [forecastLength]);
 
@@ -132,13 +112,15 @@ export default function Forecast() {
     labels.push("Today");
     accounts.forEach((account,i)=>{
       let color = colors[i%colors.length]
-      datasets.set(account.id, {label: account.id, data: [account.balance], borderColor:color, backgroundColor:color})
+      datasets.set(account.id, {label: account.name, data: [account.balance / 100], borderColor:color, backgroundColor:color})
     })
     for (let month of forecast) {
       labels.push(month.date.format("MM-YYYY"))
       //month.printReport()
-      for (let [accountId,account] of month.snapshots[month.snapshots.length-1].balances) {
-        datasets.get(accountId).data.push(account.balance)
+      if (month.snapshots.length > 0) {
+        for (let [accountId,account] of month.snapshots[month.snapshots.length-1].balances) {
+          datasets.get(accountId).data.push(account.balance / 100)
+        }
       }
     }
     setChartData({labels,datasets: Array.from(datasets.values())})
@@ -153,7 +135,7 @@ export default function Forecast() {
       <div className='length-choices'>
         {Object.entries(ForecastLength).map(([k, v]) => {
           return (
-            <label><input type="radio" name="length" value={v} checked={forecastLength === v} onChange={(event) => setForecastLength(event.target.value)}/><span>{v}</span></label>
+            <label key={k}><input type="radio" name="length" value={v} checked={forecastLength === v} onChange={(event) => setForecastLength(event.target.value)}/><span>{v}</span></label>
           );
         })}
         {forecastLength === ForecastLength.Custom &&
