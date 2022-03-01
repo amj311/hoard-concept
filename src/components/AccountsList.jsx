@@ -10,9 +10,9 @@ export default function AccountsList() {
   let [showNew, setShowNew]= useState(false);
   const [startingBalance, setStartingBalance] = useState(0);
 
-  async function createAccount() {
+  async function createAccount(event) {
+    event.preventDefault();
       let name = document.getElementById("newAccountName").value;
-
       try {
         await api.addAccount(userID, {name, currentBalance: startingBalance });
         const accounts = await api.getAccounts(userID);
@@ -46,7 +46,7 @@ export default function AccountsList() {
             <button className="hoard-button button-in-header" onClick={toggleNew}>{showNew? '×' : '+'}</button>
         </div>
         { showNew ?
-            <form className="newAccountContainer">
+            <form className="newAccountContainer" onSubmit={createAccount}>
               <b>New Account</b>
               <br/>
               <br/>
@@ -56,7 +56,7 @@ export default function AccountsList() {
                 <label htmlFor='newAccountBalance'>Starting balance: </label>
                 <input id="newAccountBalance" type="number" step={0.01} min="0" value={startingBalance / 100} onChange={(event) => setStartingBalance(event.target.valueAsNumber * 100)} onWheel={(e) => e.target.blur()}></input>
                 <br></br>
-                <button className="hoard-button" onClick={createAccount}>Create</button>
+                <input className="hoard-button" type="submit" value="Create"></input>
             </form>
             :
             null
