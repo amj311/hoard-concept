@@ -1,5 +1,6 @@
 const moment = require("moment");
 const { MONTHS } = require("./constants");
+const currencyUtils = require("./currencyUtils");
 const { newMoment } = require("./dateUtils");
 
 module.exports.Account = class {
@@ -9,7 +10,7 @@ module.exports.Account = class {
         this.balance = balance;
     }
     toString() {
-        return this.name+": $"+this.balance
+        return this.name+": "+currencyUtils.prettyMoney(this.balance)
     }
 }
 
@@ -276,12 +277,12 @@ module.exports.MonthSummary = class {
 
     printReport() {
         console.log("\n----- "+this.date.format("MMM, YYYY")+" -----")
-        console.log("Income: $"+this.report.totalIncome)
-        console.log("Expense: $"+this.report.totalExpense)
+        console.log("Income: "+currencyUtils.prettyMoney(this.report.totalIncome))
+        console.log("Expense: "+currencyUtils.prettyMoney(this.report.totalExpense))
         let sign = this.report.netGrowth > 0 ? '💹' : '🔻'
-        console.log("Net: "+sign+" $"+Math.abs(this.report.netGrowth))
+        console.log("Growth: "+sign+" "+currencyUtils.prettyMoney(this.report.netGrowth))
         
-        console.log("Balances:")
+        console.log("End Balance:")
         for (let acct of this.getEndBalances().values()){
             let msg = acct.balance < 0 ? '🔴 NEGATIVE BALANCE !!!' : ''
             console.log("  "+acct.toString()+msg);
