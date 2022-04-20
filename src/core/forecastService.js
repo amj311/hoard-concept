@@ -40,7 +40,7 @@ class ForecastService {
 
             if (details.type === TransactionType.Expense) {
                 let changedAccount = accountsCopy.get(details.targetAccount)
-                changedAccount.balance -= details.amount
+                changedAccount.balance += details.amount
             }
 
             if (details.type === TransactionType.Transfer) {

@@ -9,7 +9,7 @@ module.exports.Account = class {
         this.balance = balance;
     }
     toString() {
-        return this.id+": $"+this.balance
+        return this.name+": $"+this.balance
     }
 }
 
@@ -262,13 +262,13 @@ module.exports.MonthSummary = class {
         this.snapshots.push(snapshot);
         let details = snapshot.mostRecentEvent.details;
         let changes = this.report.accountChanges.get(details.targetAccount);
-        if (details.amount > 0) {
+        if (details.type === module.exports.TransactionType.Income) {
             changes.totalIncome += details.amount
             this.report.totalIncome += details.amount
         }
-        else {
-            changes.totalExpense -= details.amount;
-            this.report.totalExpense -= details.amount;
+        else if (details.type === module.exports.TransactionType.Expense) {
+            changes.totalExpense += details.amount;
+            this.report.totalExpense += details.amount;
         }
         changes.netGrowth = changes.totalIncome - changes.totalExpense;
         this.report.netGrowth = this.report.totalIncome - this.report.totalExpense;
@@ -281,9 +281,9 @@ module.exports.MonthSummary = class {
         let sign = this.report.netGrowth > 0 ? '💹' : '🔻'
         console.log("Net: "+sign+" $"+Math.abs(this.report.netGrowth))
         
-        console.log("\nAccounts:")
+        console.log("Balances:")
         for (let acct of this.getEndBalances().values()){
-            let msg = acct.balance < 0 ? '⭕ NEGATIVE BALANCE !!!' : ''
+            let msg = acct.balance < 0 ? '🔴 NEGATIVE BALANCE !!!' : ''
             console.log("  "+acct.toString()+msg);
         }
     }
