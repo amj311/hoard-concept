@@ -1,4 +1,4 @@
-import {
+const {
     Account,
     TransactionSchedule,
     TransactionEvent,
@@ -8,11 +8,11 @@ import {
     MonthSummary,
     Snapshot,
     TransactionType,
-} from "./models"
-import { MONTHS } from "./constants"
-import { newMoment } from "./dateUtils"
-import ForecastService from "./forecastService"
-import idGenerator from "../util/idGenerator"
+} = require("./models");
+const { MONTHS } = require("./constants");
+const { newMoment } = require("./dateUtils");
+const ForecastService = require("./forecastService");
+const idGenerator = require("../util/idGenerator");
 
 const checkingID = idGenerator();
 let initialAccounts = [

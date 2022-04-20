@@ -1,9 +1,8 @@
-import moment from "moment"
-import { MONTHS } from "./constants"
-import { newMoment } from "./dateUtils"
-import idGenerator from "../util/idGenerator"
+const moment = require("moment");
+const { MONTHS } = require("./constants");
+const { newMoment } = require("./dateUtils");
 
-export class Account {
+module.exports.Account = class {
     constructor(id,name,balance) {
         this.id = id;
         this.name = name;
@@ -14,7 +13,7 @@ export class Account {
     }
 }
 
-export class Category {
+module.exports.Category = class {
     constructor(id,name,balance) {
         this.id = id;
         this.name = name;
@@ -22,7 +21,7 @@ export class Category {
     }
 }
 
-export class CategoryTally {
+module.exports.CategoryTally = class {
     constructor(id, amount=0) {
         this.id = id;
         this.amount = amount;
@@ -30,11 +29,11 @@ export class CategoryTally {
 }
 
 
-export class Schedule {
+module.exports.Schedule = class {
     getOccurrencesBetween(start,end) {}
 }
 
-export class XPerMonthSchedule extends Schedule {
+module.exports.XPerMonthSchedule = class extends module.exports.Schedule {
     constructor(frequencyPerMonth, startDate, endDate) {
         super();
         this.frequencyPerMonth = frequencyPerMonth;
@@ -77,7 +76,7 @@ export class XPerMonthSchedule extends Schedule {
     }
 }
 
-export class OneTimeSchedule extends Schedule {
+module.exports.OneTimeSchedule = class extends module.exports.Schedule {
     constructor(date) {
         super();
         this.date = newMoment(date);
@@ -93,7 +92,7 @@ export class OneTimeSchedule extends Schedule {
 }
 
 //  NOT SURE THIS WILL BE USED YET. IT NEEDS SOME TESTING TO MAKE SURE IT WORKS
-// export class EveryXMonthSchedule extends Schedule {
+// module.exports.EveryXMonthSchedule = class extends module.exports.Schedule {
 //     constructor(monthIval, startDate, endDate) {
 //         super();
 //         this.frequencyPerMonth = monthIval;
@@ -133,18 +132,18 @@ export class OneTimeSchedule extends Schedule {
 //     }
 // }
 
-export const TransactionType = {
+module.exports.TransactionType = {
     Income: "Income",
     Expense: "Expense",
     Transfer: "Transfer",
 }
 
-export const FrequencyType = {
+module.exports.FrequencyType = {
     Once: "Once",
     PerMonth: "Per month"
 };
 
-export class TransactionTemplate {
+module.exports.TransactionTemplate = class {
     constructor(type,memo,amount,target,origin=null,categoryId=null) {
         this.type = type;
         this.memo = memo;
@@ -155,7 +154,7 @@ export class TransactionTemplate {
     }
 }
 
-export class TransactionSchedule {
+module.exports.TransactionSchedule = class {
     constructor(id, template,schedule) {
         this.schedule = schedule;
         this.template = template;
@@ -163,7 +162,7 @@ export class TransactionSchedule {
     }
 }
 
-export class TransactionEvent {
+module.exports.TransactionEvent = class {
     constructor(template,date) {
         this.date = date;
         this.details = template;
@@ -172,7 +171,7 @@ export class TransactionEvent {
 
 /** A structure that holds all computed transactions for easy access */
 //  UNFINISHED!!!
-export class Forecast {
+module.exports.Forecast = class {
     constructor() {
         this.map = new Map(); // <id, idx>
         this.list = [];
@@ -231,14 +230,14 @@ export class Forecast {
     // }
 }
 
-export class Snapshot {
+module.exports.Snapshot = class {
     constructor(balances, mostRecentEvent) {
         this.balances = balances;
         this.mostRecentEvent = mostRecentEvent;
     }
 }
 
-export class MonthSummary {
+module.exports.MonthSummary = class {
     constructor(date, initialBalances) {
         this.date = newMoment(date);
         this.id = this.date.format("YYYY-MM")
